@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Global IPO Tracker — Upcoming Listings Across 11 Exchanges</title>
+<meta name="description" content="Screen upcoming IPOs across the LSE, WSE, DFM, Tadawul, JSE, B3, SGX, TWSE, SET, Bursa Malaysia and Xetra." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">Global Equity Capital Markets</p>
+        <h1>Upcoming IPO Tracker</h1>
+        <p class="mast-sub">Announced, filed and reported listings across eleven exchanges in Europe, MENA, Africa, Latin America and Asia-Pacific.</p>
+      </div>
+      <div class="stats">
+        <div><div class="stat-k" id="statCos">—</div><div class="stat-l">Companies</div></div>
+        <div><div class="stat-k" id="statXch">—</div><div class="stat-l">Exchanges</div></div>
+        <div><div class="stat-k" id="statVal">—</div><div class="stat-l">Aggregate Val.</div></div>
+        <div><div class="stat-k" id="statFiled">—</div><div class="stat-l">Filed / Approved</div></div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="rail-head">
+        <span class="rail-title">Listing calendar — click a month to filter</span>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--us)"></i>US</span>
+          <span><i class="dot" style="background:var(--eu)"></i>Europe</span>
+          <span><i class="dot" style="background:var(--mena)"></i>MENA</span>
+          <span><i class="dot" style="background:var(--afr)"></i>Africa &amp; LatAm</span>
+          <span><i class="dot" style="background:var(--apac)"></i>Asia-Pacific</span>
+        </div>
+      </div>
+      <div class="rail-grid" id="rail"></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="ctl-row">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Search company or ticker" aria-label="Search by company name" autocomplete="off">
+      </div>
+      <select id="xchg" aria-label="Filter by exchange"><option value="">All exchanges</option></select>
+      <select id="src" aria-label="Filter by data source">
+        <option value="">Any source</option>
+        <option value="live">Live feed only</option>
+        <option value="curated">Curated only</option>
+      </select>
+      <select id="status" aria-label="Filter by filing status">
+        <option value="">Any status</option>
+        <option>Filed</option>
+        <option>Approved</option>
+        <option>Announced</option>
+        <option>Reported</option>
+      </select>
+      <button class="btn" id="watchBtn" aria-pressed="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.6 5.6 6.4.8-4.7 4.3 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.4l6.4-.8z"/></svg>
+        Watchlist <span id="watchCount" class="num"></span>
+      </button>
+      <button class="btn" id="clearBtn">Clear filters</button>
+      <div class="spacer"></div>
+      <span class="count" id="sync"></span>
+      <button class="btn" id="refreshBtn" title="Check for updated listings" aria-label="Refresh listings">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg>
+        Refresh
+      </button>
+      <span class="count"><b id="shown">0</b> of <span id="total">0</span> listings</span>
+      <button class="btn btn-primary" id="csvBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="chips" id="sectors"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="panel">
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:30px"></th>
+            <th style="width:30px"></th>
+            <th class="sortable" data-k="company" style="min-width:230px">Company</th>
+            <th class="sortable" data-k="exchange">Exchange</th>
+            <th class="sortable" data-k="listDate">Expected listing</th>
+            <th class="sortable" data-k="sector">Sector</th>
+            <th class="sortable" data-k="valUsd">Expected valuation</th>
+            <th class="sortable" data-k="ceo" style="min-width:230px">CEO</th>
+            <th class="sortable" data-k="cfo" style="min-width:230px">CFO</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" hidden>
+      <h3>No listings match these filters</h3>
+      <p>Widen the exchange or sector selection, or clear the search term.</p>
+      <button class="btn" onclick="clearAll()">Clear filters</button>
+    </div>
+  </div>
+
+
+  <footer>
+    Rows marked <span class="src-pill live">live</span> refresh from SEC EDGAR on a weekday cron. Rows marked <span class="src-pill">curated</span> are maintained by hand from exchange announcements, regulator approvals and reported intentions to float. Executive emails are pattern-inferred from the corporate domain; unsourced fields show N/A.
+  </footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
