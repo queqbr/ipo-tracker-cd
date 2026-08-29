@@ -1,0 +1,33 @@
+name: Refresh listings
+
+on:
+  schedule:
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Regenerate data.json
+        env:
+          IPO_API_KEY: ${{ secrets.IPO_API_KEY }}
+        run: node scripts/refresh.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "listings-bot"
+          git config user.email "actions@github.com"
+          git add data.json
+          git diff --staged --quiet && echo "No change." && exit 0
+          git commit -m "Refresh listings $(date -u +%Y-%m-%d)"
+          git push
