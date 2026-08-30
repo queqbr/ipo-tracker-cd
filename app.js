@@ -251,17 +251,6 @@ function person(role, name, email, conf){
   return out + '</div>';
 }
 
-/* Exchange-level status badge: "live" if the exchange has an enabled
-   agent source (capability, not whether this run found fresh rows),
-   a "needs subscription" note if it's flagged as paid-data-only, or
-   nothing at all — the unmarked baseline for everything else. */
-function exchangeBadge(exchange){
-  if (LIVE_EXCHANGES.has(exchange)) return ' <span class="src-pill live">live</span>';
-  const note = CURATED_NOTES.get(exchange);
-  if (note) return ' <span class="src-pill locked" title="' + esc(note) + '">needs subscription</span>';
-  return '';
-}
-
 function render(){
   const rows = filtered();
   const tb = $('#tbody');
@@ -273,8 +262,7 @@ function render(){
       + '<td><button class="icon-btn' + (starred?' starred':'') + '" data-star="' + esc(r.company) + '" aria-pressed="' + starred + '" aria-label="Save ' + esc(r.company) + ' to watchlist">'
         + '<svg width="13" height="13" viewBox="0 0 24 24" fill="' + (starred?'currentColor':'none') + '" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.6 5.6 6.4.8-4.7 4.3 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.4l6.4-.8z"/></svg></button></td>'
       + '<td><div class="co">' + esc(r.company) + '</div><div class="co-sub">' + esc(r.ticker || 'N/A') + ' &middot; ' + esc(r.status) + '</div></td>'
-      + '<td><div class="xchg"><i class="dot" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')"></i>' + esc(r.exchange)
-        + exchangeBadge(r.exchange) + '</div>'
+      + '<td><div class="xchg"><i class="dot" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')"></i>' + esc(r.exchange) + '</div>'
         + '<div class="co-sub" style="margin-left:14px">' + esc((EXCHANGE_NAME[r.exchange] || r.exchange)) + '</div></td>'
       + '<td><div class="date">' + fmtDate(r.listDate) + '<small>' + esc(r.dateNote) + '</small></div></td>'
       + '<td><span class="sector">' + esc(r.sector) + '</span></td>'
