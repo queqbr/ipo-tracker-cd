@@ -36,7 +36,7 @@ function agentSource(cfg){
     async fetch(){
       const { text, strategy } = await fetchPage(cfg.url, { browser: cfg.browser, engine: cfg.engine });
       const { rows, dropped } = await extractListings({
-        text, exchange: cfg.exchange, url: cfg.url, hint: cfg.hint
+        text, exchange: cfg.exchange, url: cfg.url, hint: cfg.hint, model: cfg.model
       });
       if (dropped.length) console.error(`  ${cfg.exchange} dropped ${dropped.length}: ${dropped.slice(0,3).join('; ')}`);
       console.error(`  ${cfg.exchange} via ${strategy}, ${text.length} chars`);

@@ -19,7 +19,7 @@
    ============================================================ */
 
 const API   = 'https://api.openai.com/v1/chat/completions';
-const MODEL = process.env.EXTRACT_MODEL || 'gpt-4o-mini';
+const DEFAULT_MODEL = process.env.EXTRACT_MODEL || 'gpt-4o-mini';
 const MAX_CHARS = 60000;          // trim very long pages before sending
 
 const SECTORS = ['FinTech','Technology','AI Infrastructure','Semiconductors','Biotech','Healthcare',
@@ -150,7 +150,7 @@ function coerce(row, exchange){
 }
 
 /* ------------------------------------------------------------ */
-export async function extractListings({ text, exchange, url, hint }){
+export async function extractListings({ text, exchange, url, hint, model }){
   const key = process.env.OPENAI_API_KEY;
   if (!key) throw new Error('OPENAI_API_KEY not set');
 
@@ -167,7 +167,7 @@ export async function extractListings({ text, exchange, url, hint }){
       'authorization': `Bearer ${key}`
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: model || DEFAULT_MODEL,
       // Some sources (TWSE's full listing table, for one) run to 30-40+ rows;
       // 8000 was tight enough to truncate the response mid-JSON on at least
       // one real run, which surfaces as "model did not return valid JSON"

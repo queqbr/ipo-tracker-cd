@@ -113,7 +113,13 @@ export const SOURCES = [
     url:urlFor('KLSE'),
     hint:'IPO Summary table (company, offer period, issue price, shares, market — Main/ACE/LEAP, listing date), newest first, ~20 rows per page with only the first page fetched. Spans past and upcoming listings; skip rows whose listing date has already passed. No total deal size is stated directly: the "No of Shares" column breaks into three sub-columns — Public Issue, Offer For Sale, Private Placement (a "-" means that tranche is not part of this IPO, treat it as 0) — all offered at the single stated issue price. sharesOffered MUST be Public Issue + Offer For Sale + Private Placement ADDED TOGETHER for EVERY row with this table shape, never Public Issue alone — Public Issue by itself is only the new-capital portion, not the total IPO size, and this applies identically to every company in the table, not just one of them. Generic worked example (not a real company, just showing the arithmetic): if a row shows Public Issue 10,000,000, Offer For Sale 4,000,000, Private Placement 6,000,000, then sharesOffered = 20,000,000 — the sum of all three — not 10,000,000.',
     browser:true,
-    engine:'firefox'
+    engine:'firefox',
+    // gpt-4o-mini was inconsistent on this specific table's arithmetic — verified
+    // across repeated test runs applying the sum-three-tranches rule correctly to
+    // some rows and not others, or not at all, with no prompt wording that fixed
+    // it reliably. Scoped to just this source rather than raising EXTRACT_MODEL
+    // globally, since every other source has extracted correctly with the default.
+    model:'gpt-4o'
   },
 
   /* --------------------------------------------------------------
