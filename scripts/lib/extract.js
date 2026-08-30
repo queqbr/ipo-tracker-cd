@@ -37,8 +37,8 @@ Each element of "listings" must have exactly these keys:
   dateNote  string  short phrase describing how firm the date is, e.g. "Exchange confirmed", "Subscription period stated", "Date not yet set"
   sector    string  one of: ${SECTORS.join(', ')}
   status    string  one of: ${STATUSES.join(', ')}
-  valDisp   string  expected valuation or deal size with its currency exactly as stated, e.g. "PLN 4.4bn", or "N/A"
-  valUsd    number  approximate USD equivalent in MILLIONS, or 0 when no figure is given
+  valDisp   string  TOTAL expected valuation or deal size with its currency, e.g. "PLN 4.4bn" — never a per-share or per-unit price, or "N/A"
+  valUsd    number  approximate USD equivalent of the TOTAL deal size in MILLIONS, or 0 when no total figure is given or computable
   desc      string  two or three sentences on what the company does and what the offering involves, drawn only from the page
   ceo       string  chief executive's full name if the page names one, else "N/A"
   cfo       string  chief financial officer's full name if the page names one, else "N/A"
@@ -51,7 +51,9 @@ Rules, in order of importance:
 3. Only include equity IPOs of operating companies that have not yet listed. Skip completed listings, delistings, results announcements, bond issues, secondary placings, and ETFs/ETPs/index funds/other collective investment vehicles — this schema is for companies going public, not funds listing new units.
 4. Map status honestly: "Approved" when the exchange or regulator has cleared it, "Filed" when a prospectus or application is lodged, "Announced" when the company has published an intention to float, "Reported" when the page is only reporting rumour.
 5. Translate names and descriptions into English, but leave tickers and currency codes as published.
-6. Dates must be YYYY-MM-DD. If the page gives only a month or quarter, use "N/A" and say so in dateNote.`;
+6. Dates must be YYYY-MM-DD. If the page gives only a month or quarter, use "N/A" and say so in dateNote.
+7. valDisp/valUsd are the TOTAL size of the offering, never a per-share or per-unit price. Some tables give only an issue price per share (e.g. "RM 0.35") alongside a separate share-count column rather than a stated total — if so, multiply price by the total number of shares/units offered to get the total, and use that. If the page gives a per-share price with no way to determine the total shares offered, use "N/A" / 0 rather than reporting the per-share price as if it were the deal size — a per-share price and a total deal size differ by orders of magnitude, and reporting one as the other is a data error, not a rounding one.
+8. valDisp always includes its currency code or symbol, taken from the page (a column header stating the currency counts as stating it) — never a bare number with no unit.`;
 
 function stripFences(s){
   return s.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
@@ -79,6 +81,21 @@ function coerce(row, exchange){
   let valUsd = Number(row.valUsd);
   if (!Number.isFinite(valUsd) || valUsd < 0) valUsd = 0;
 
+  // Backstop for rule 8 above: a bare number with no currency code is
+  // ambiguous at best. Also catches rule 7's failure mode where a per-share
+  // price (e.g. "RM 0.35") got reported as the deal size — those are always
+  // small, so anything under 1 in whatever unit is stated is far too small
+  // to be a real total offering size and is more likely a per-share price.
+  let valDisp = s(row.valDisp);
+  if (valDisp !== 'N/A' && !/[a-zA-Z]/.test(valDisp)) valDisp = 'N/A';
+  if (valDisp !== 'N/A'){
+    // A bare decimal under 1 at the very end of the string (nothing after it
+    // but whitespace, e.g. "RM 0.35" or "RM0.35") is a per-share price, not
+    // a total — a real total always has a scale word/suffix after the number.
+    const trailingNum = valDisp.replace(/,/g, '').match(/(\d+\.\d+)\s*$/);
+    if (trailingNum && parseFloat(trailingNum[1]) < 1) valDisp = 'N/A';
+  }
+
   return { ok:true, row: {
     sourceType:'live',
     company,
@@ -89,7 +106,7 @@ function coerce(row, exchange){
     sector:   SECTORS.includes(row.sector) ? row.sector : 'Other',
     status:   STATUSES.includes(row.status) ? row.status : 'Announced',
     valUsd,
-    valDisp:  s(row.valDisp),
+    valDisp,
     desc:     s(row.desc),
     ceo:      s(row.ceo), ceoEmail:'N/A', ceoConf:null,
     cfo:      s(row.cfo), cfoEmail:'N/A', cfoConf:null,
