@@ -306,9 +306,8 @@ function renderStats(){
   $('#statXch').textContent = new Set(DATA.map(r => r.exchange)).size;
   const total = DATA.reduce((s,r) => s + r.valUsd, 0);
   $('#statVal').textContent = '$' + (total/1000).toFixed(0) + 'bn';
-  const live = DATA.filter(r => r.sourceType === 'live').length;
-  $('#statFiled').textContent = live + ' / ' + DATA.length;
-  document.querySelector('#statFiled + .stat-l').textContent = 'Live-sourced';
+  const filed = DATA.filter(r => r.status === 'Filed' || r.status === 'Approved').length;
+  $('#statFiled').textContent = filed + ' / ' + DATA.length;
 }
 
 function renderControls(){
