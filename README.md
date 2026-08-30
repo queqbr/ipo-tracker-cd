@@ -89,6 +89,8 @@ Several exchanges block datacenter IPs or render their calendar client-side, so 
 
 Both go in repository secrets under Settings → Secrets and variables → Actions. Locally, copy `.env.local.example` to `.env.local` (gitignored) and fill in real values — `npm run refresh` / `npm run probe` load it automatically via Node's `--env-file-if-exists`.
 
+`SOURCE_URLS_JSON`'s value in `.env.local` is wrapped in single quotes (`SOURCE_URLS_JSON='{"LSE":...}'`) — that's `.env` file syntax so Node's parser knows where the value starts and ends, and it strips the quotes on load. The GitHub secret must hold just the raw JSON with no wrapping quotes; pasting the `.env.local` line's value verbatim (quotes included) makes `sources.js` fail to parse it. Extract just the JSON: `grep -oP "(?<=SOURCE_URLS_JSON=').*(?=')" .env.local`.
+
 Without `OPENAI_API_KEY` or a given exchange's URL, that agent source can't run; it fails and the exchange falls back to its curated rows.
 
 **Safety rails.** Sources run four at a time. A failing source keeps its curated rows rather than dropping an exchange from the table. A payload failing schema validation exits non-zero. And a run producing fewer than half the seed row count refuses to publish, so a bad night cannot quietly empty the dashboard.
