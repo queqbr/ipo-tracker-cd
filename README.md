@@ -14,7 +14,11 @@ styles.css                     design tokens and layout
 data.js                        curated dataset, 33 listings
 data.json                      served payload, regenerated on a schedule
 app.js                         filter, sort, render, refresh
-scripts/refresh.js             pulls SEC EDGAR, merges with curated rows
+scripts/refresh.js             runs the agent layer, merges with curated rows
+scripts/sources.js             one entry per exchange: URL, hint, browser/engine flags
+scripts/lib/fetch-page.js      fetches a page and reduces it to model-readable text
+scripts/lib/extract.js         has an LLM read the text against the row schema
+scripts/probe.js               dry-run reachability check per source
 .github/workflows/refresh.yml  weekday cron
 ```
 
@@ -48,15 +52,15 @@ Local preview: `python3 -m http.server 8000`, then open `http://localhost:8000`.
 
 ## Data
 
-Two layers, and every row says which it belongs to.
+Two layers, and every row says which it belongs to. Both cover the same eleven exchanges — the split is about how fresh a row is, not which market it's on.
 
-**Live** — NASDAQ, NYSE and AMEX, pulled from SEC EDGAR through the API Ninjas IPO endpoint. These refresh on the cron without anyone touching them.
+**Live** — read directly off each exchange's own site by an LLM (the agent layer, below) on the weekday cron, no CSS selectors involved.
 
-**Curated** — the eleven non-US exchanges. None of them publishes a free structured IPO calendar. Warsaw, Dubai, Riyadh, Johannesburg, São Paulo, Bangkok and Bursa release announcements as HTML and PDF, several not in English, and the LSE's RNS Data Feed is a licensed product behind authentication. These rows are maintained by hand and marked as such rather than dressed up as a feed.
+**Curated** — the hand-maintained fallback in `data.js`. Whenever an exchange's live source fails for a given run, that exchange's rows stay on whatever was last curated or last successfully scraped, rather than the row disappearing from the table.
 
 Filter to Live feed only or Curated only in the toolbar to see the split.
 
-The curated layer is built from exchange announcements, regulator approvals and reported intentions to float, current to late August 2026. Each row carries a `status` field distinguishing what has been filed from what has only been reported:
+Every row, live or curated, carries a `status` field distinguishing what has been filed from what has only been reported:
 
 | Status | Meaning |
 |---|---|
@@ -67,23 +71,11 @@ The curated layer is built from exchange announcements, regulator approvals and 
 
 Filtering to Filed and Approved gives the near-certain calendar. Reported is the pipeline.
 
-**How the refresh works.** `scripts/refresh.js` pulls the next 180 days of filed, amended and priced US offerings, maps SIC codes onto the dashboard's sector taxonomy, merges the result with the curated rows and writes `data.json`. `.github/workflows/refresh.yml` runs it at 06:00 UTC on weekdays and commits only when something changed. The commit triggers a redeploy and the live page picks it up on its next poll.
+**The agent layer.** None of these eleven exchanges publishes a free structured IPO calendar, several release announcements only as HTML/PDF and not in English, and the pages redesign without notice — a CSS-selector scraper breaks silently on a class rename, while a model reading the text does not care about markup. `scripts/lib/fetch-page.js` retrieves each page, escalating through a plain request, a reader proxy that renders JavaScript, and a headless browser (Chromium by default; some sources need Firefox or WebKit specifically, since a handful of Akamai/Cloudflare-fronted sites fingerprint and block headless Chromium alone). `scripts/lib/extract.js` hands the text to OpenAI's API with the row schema and instructions never to invent a value. Every returned row is validated here, so anything malformed is dropped rather than published.
 
-Two guardrails. A source that throws leaves its previous rows in place rather than dropping an exchange from the table, and a payload failing schema validation exits non-zero without writing anything.
+As of 2026-08-30, 10 of the 11 exchanges have a working live source (LSE, WSE, XETRA, DFM, TWSE, SET, TADAWUL, SGX, KLSE, and B3 via CVM's public offering-registration registry rather than B3 itself, which has no free calendar of its own). JSE is the one exception: its official feed is a licensed product behind authentication, and a third-party workaround was tried and ruled out (Cloudflare's reputation-based blocking escalates to a flat deny after a few automated requests, with no challenge widget to solve around). A paid enterprise data subscription looks like the only real fix for JSE; it stays on the curated layer.
 
-**Setup.** Get a free key at api-ninjas.com/register, then add it as a repository secret named `IPO_API_KEY` under Settings → Secrets and variables → Actions. Locally:
-
-```
-IPO_API_KEY=your_key npm run refresh
-```
-
-Without the key the script still runs, logs the failure and writes the curated rows on their own. Note the free tier is non-commercial.
-
-**The agent layer.** The non-US exchanges are read by an LLM rather than by CSS selectors. `scripts/lib/fetch-page.js` retrieves the page, escalating through a plain request, a reader proxy that renders JavaScript, and a headless browser (Chromium by default; some sources need Firefox or WebKit specifically, since a handful of Akamai/Cloudflare-fronted sites fingerprint and block headless Chromium alone). `scripts/lib/extract.js` hands the text to OpenAI's API with the row schema and instructions never to invent a value. Every returned row is validated here, so anything malformed is dropped rather than published.
-
-Selectors were the wrong tool for these sources. The pages are published in four languages and redesign without notice, and a class rename breaks a selector silently while a model reading the text does not care about markup.
-
-As of 2026-08-30, 10 of 11 curated exchanges have a working live source (LSE, WSE, XETRA, DFM, TWSE, SET, TADAWUL, SGX, KLSE, and B3 via CVM's public offering-registration registry rather than B3 itself). JSE is the one exception: its official feed is a licensed product behind authentication, and a third-party workaround was tried and ruled out (Cloudflare's reputation-based blocking escalates to a flat deny after a few automated requests, with no challenge widget to solve around). A paid enterprise data subscription looks like the only real fix for JSE; it stays on the curated layer.
+**How the refresh works.** `scripts/refresh.js` reads `scripts/sources.js`, fetches and extracts each enabled exchange, merges the result with the curated seed in `data.js` and writes `data.json`. `.github/workflows/refresh.yml` runs it at 06:00 UTC on weekdays and commits only when something changed. The commit triggers a redeploy and the live page picks it up on its next poll.
 
 **Check what is reachable first:**
 
@@ -95,15 +87,17 @@ npm run probe LSE WSE            # a subset
 
 Several exchanges block datacenter IPs or render their calendar client-side, so expect some to fail. Set `browser:true` on those in `scripts/sources.js` (and `engine:'firefox'`/`'webkit'` if Chromium specifically gets blocked), or `enabled:false` to leave an exchange on the curated layer.
 
-**Keys.** `OPENAI_API_KEY` for extraction, `IPO_API_KEY` for the SEC source. Both go in repository secrets under the same names.
+**Keys and URLs.** `OPENAI_API_KEY` for extraction. Source URLs aren't committed to this file — this is a public repo, and a couple of them are workarounds (an undocumented data endpoint, a specific query against a regulator's search form) rather than the exchange's own published page, so they live in `SOURCE_URLS_JSON` instead: a JSON object of `{ EXCHANGE_CODE: url }`, one entry per exchange in `scripts/sources.js`. A url containing the literal string `{{YEAR}}` has that substituted with the current year at load time (used by B3's CVM query).
+
+Both go in repository secrets under Settings → Secrets and variables → Actions. Locally, copy `.env.local.example` to `.env.local` (gitignored) and fill in real values — `npm run refresh` / `npm run probe` load it automatically via Node's `--env-file-if-exists`.
+
+Without `OPENAI_API_KEY` or a given exchange's URL, that agent source can't run; it fails and the exchange falls back to its curated rows.
 
 **Safety rails.** Sources run four at a time. A failing source keeps its curated rows rather than dropping an exchange from the table. A payload failing schema validation exits non-zero. And a run producing fewer than half the seed row count refuses to publish, so a bad night cannot quietly empty the dashboard.
 
 **Adding another exchange.** Append an entry to `scripts/sources.js` with an exchange code, a URL and a one-line hint. Nothing else changes.
 
 **Offline fallback.** Opened from the file system, the app skips the fetch and reads the seed array in `data.js` directly, so double-clicking `index.html` still works.
-
-**Deal size on live rows.** The free EDGAR tier returns no offer size, so `valUsd` is left at zero and renders as N/A. The valuation column sorts those to the bottom in either direction rather than treating an unknown as a small number.
 
 **Executive contacts.** Names come from the prospectus or the company's own disclosures. Email addresses are pattern-inferred from the verified corporate domain and carry an `inferred` flag until confirmed. Where a filing does not disclose a CFO, the field shows N/A and the drawer offers the investor relations mailbox as a routing fallback. No individual is named who is not named in a source.
 

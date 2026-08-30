@@ -61,7 +61,7 @@ function stripFences(s){
    Row validation. Anything malformed is dropped with a reason
    rather than allowed into data.json.
    ------------------------------------------------------------ */
-function coerce(row, exchange){
+function coerce(row, exchange, url){
   const s = v => (typeof v === 'string' && v.trim()) ? v.trim() : 'N/A';
 
   if (!row || typeof row !== 'object') return { ok:false, why:'not an object' };
@@ -89,6 +89,7 @@ function coerce(row, exchange){
     desc:     s(row.desc),
     ceo:      s(row.ceo), ceoEmail:'N/A', ceoConf:null,
     cfo:      s(row.cfo), cfoEmail:'N/A', cfoConf:null,
+    source:   url,
     hq:       s(row.hq),
     bank:     s(row.bank)
   }};
@@ -136,7 +137,7 @@ export async function extractListings({ text, exchange, url, hint }){
 
   const rows = [], dropped = [];
   for (const r of parsed){
-    const c = coerce(r, exchange);
+    const c = coerce(r, exchange, url);
     c.ok ? rows.push(c.row) : dropped.push(`${r?.company || '?'}: ${c.why}`);
   }
 

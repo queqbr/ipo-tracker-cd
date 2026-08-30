@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "refresh": "node scripts/refresh.js",
+    "refresh": "node --env-file-if-exists=.env.local scripts/refresh.js",
     "serve": "python3 -m http.server 8000",
-    "probe": "node scripts/probe.js"
+    "probe": "node --env-file-if-exists=.env.local scripts/probe.js"
   },
   "devDependencies": {
     "playwright": "^1.62.1"

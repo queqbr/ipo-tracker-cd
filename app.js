@@ -206,7 +206,7 @@ function drawer(r){
         + fact('Headquarters', r.hq)
         + fact('Bookrunners', r.bank)
         + fact('Source', r.source)
-        + fact('Refresh', r.sourceType === 'live' ? 'Live — SEC EDGAR, weekday cron' : 'Curated — updated by hand')
+        + fact('Refresh', r.sourceType === 'live' ? 'Live — agent-scraped, weekday cron' : 'Curated — updated by hand')
       + '</div>'
     + '</div>'
     + '<div>'

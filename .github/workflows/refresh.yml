@@ -26,8 +26,8 @@ jobs:
 
       - name: Regenerate data.json
         env:
-          IPO_API_KEY: ${{ secrets.IPO_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SOURCE_URLS_JSON: ${{ secrets.SOURCE_URLS_JSON }}
         run: node scripts/refresh.js
 
       - name: Commit if changed
