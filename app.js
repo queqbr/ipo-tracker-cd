@@ -97,7 +97,15 @@ const store = (() => {
 })();
 
 let watch = new Set(JSON.parse(store.get('ipo.watchlist') || '[]'));
-const state = { q:'', exchange:'', sector:'', status:'', src:'', month:'', watchOnly:false, sort:'listDate', dir:1, open:new Set() };
+const state = { q:'', exchange:'', sector:'', status:'', month:'', watchOnly:false, sort:'listDate', dir:1, open:new Set() };
+
+/* Live/historical is tracked per exchange, not per listing: an exchange
+   counts as live if any of its current rows came from the agent scraper
+   this run. Historical exchanges get no special marking — they're the
+   baseline, not a called-out state. */
+function liveExchanges(){
+  return new Set(DATA.filter(r => r.sourceType === 'live').map(r => r.exchange));
+}
 
 const $ = s => document.querySelector(s);
 const NA = v => (!v || v === 'N/A');
@@ -148,7 +156,6 @@ function filtered(){
     if (state.exchange && r.exchange !== state.exchange) return false;
     if (state.sector && r.sector !== state.sector) return false;
     if (state.status && r.status !== state.status) return false;
-    if (state.src && (r.sourceType || 'curated') !== state.src) return false;
     if (state.month && monthKey(r.listDate) !== state.month) return false;
     if (state.watchOnly && !watch.has(r.company)) return false;
     return true;
@@ -205,8 +212,6 @@ function drawer(r){
         + fact('Expected valuation', r.valDisp)
         + fact('Headquarters', r.hq)
         + fact('Bookrunners', r.bank)
-        + fact('Source', r.source)
-        + fact('Refresh', r.sourceType === 'live' ? 'Live — agent-scraped, weekday cron' : 'Curated — updated by hand')
       + '</div>'
     + '</div>'
     + '<div>'
@@ -243,6 +248,7 @@ function person(role, name, email, conf){
 
 function render(){
   const rows = filtered();
+  const live = liveExchanges();
   const tb = $('#tbody');
   tb.innerHTML = rows.map(r => {
     const on = state.open.has(r.company);
@@ -251,9 +257,9 @@ function render(){
       + '<td><button class="expand" data-toggle="' + esc(r.company) + '" aria-expanded="' + on + '" aria-label="Toggle detail for ' + esc(r.company) + '">' + (on?'&minus;':'+') + '</button></td>'
       + '<td><button class="icon-btn' + (starred?' starred':'') + '" data-star="' + esc(r.company) + '" aria-pressed="' + starred + '" aria-label="Save ' + esc(r.company) + ' to watchlist">'
         + '<svg width="13" height="13" viewBox="0 0 24 24" fill="' + (starred?'currentColor':'none') + '" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.6 5.6 6.4.8-4.7 4.3 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.4l6.4-.8z"/></svg></button></td>'
-      + '<td><div class="co">' + esc(r.company) + '</div><div class="co-sub">' + esc(r.ticker || 'N/A') + ' &middot; ' + esc(r.status)
-        + ' <span class="src-pill' + (r.sourceType === 'live' ? ' live">live' : '">curated') + '</span></div></td>'
-      + '<td><div class="xchg"><i class="dot" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')"></i>' + esc(r.exchange) + '</div>'
+      + '<td><div class="co">' + esc(r.company) + '</div><div class="co-sub">' + esc(r.ticker || 'N/A') + ' &middot; ' + esc(r.status) + '</div></td>'
+      + '<td><div class="xchg"><i class="dot" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')"></i>' + esc(r.exchange)
+        + (live.has(r.exchange) ? ' <span class="src-pill live">live</span>' : '') + '</div>'
         + '<div class="co-sub" style="margin-left:14px">' + esc((EXCHANGE_NAME[r.exchange] || r.exchange)) + '</div></td>'
       + '<td><div class="date">' + fmtDate(r.listDate) + '<small>' + esc(r.dateNote) + '</small></div></td>'
       + '<td><span class="sector">' + esc(r.sector) + '</span></td>'
@@ -304,8 +310,9 @@ function renderStats(){
 
 function renderControls(){
   const xs = [...new Set(DATA.map(r => r.exchange))].sort();
+  const live = liveExchanges();
   $('#xchg').innerHTML = '<option value="">All exchanges</option>'
-    + xs.map(x => '<option value="' + x + '">' + x + ' — ' + (EXCHANGE_NAME[x] || x) + '</option>').join('');
+    + xs.map(x => '<option value="' + x + '">' + x + ' — ' + (EXCHANGE_NAME[x] || x) + (live.has(x) ? ' (live)' : '') + '</option>').join('');
   const ss = [...new Set(DATA.map(r => r.sector))].sort();
   $('#sectors').innerHTML = '<button class="chip' + (state.sector===''?' on':'') + '" data-sector="">All sectors</button>'
     + ss.map(s => '<button class="chip" data-sector="' + esc(s) + '">' + esc(s) + '</button>').join('');
@@ -317,14 +324,14 @@ function renderControls(){
 function exportCsv(){
   const rows = filtered();
   if (!rows.length) return toast('Nothing to export');
-  const head = ['Company','Ticker','Exchange','Exchange City','Data Source','Expected Listing Date','Timing Basis','Sector',
+  const head = ['Company','Ticker','Exchange','Exchange City','Expected Listing Date','Timing Basis','Sector',
                 'Filing Status','Expected Valuation','USD Equivalent (m)','CEO','CEO Email','CEO Email Confidence',
-                'CFO','CFO Email','CFO Email Confidence','Headquarters','Bookrunners','Source','Business Description'];
+                'CFO','CFO Email','CFO Email Confidence','Headquarters','Bookrunners','Business Description'];
   const cell = v => '"' + String(v ?? 'N/A').replace(/"/g,'""') + '"';
   const body = rows.map(r => [
-    r.company, r.ticker || 'N/A', r.exchange, EXCHANGE_NAME[r.exchange] || r.exchange, r.sourceType || 'curated', r.listDate, r.dateNote, r.sector,
+    r.company, r.ticker || 'N/A', r.exchange, EXCHANGE_NAME[r.exchange] || r.exchange, r.listDate, r.dateNote, r.sector,
     r.status, r.valDisp, r.valUsd, r.ceo, r.ceoEmail, r.ceoConf || 'N/A',
-    r.cfo, r.cfoEmail, r.cfoConf || 'N/A', r.hq, r.bank, r.source, r.desc
+    r.cfo, r.cfoEmail, r.cfoConf || 'N/A', r.hq, r.bank, r.desc
   ].map(cell).join(','));
   const csv = [head.map(cell).join(','), ...body].join('\r\n');
   const url = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8;'}));
@@ -342,7 +349,6 @@ function exportCsv(){
 $('#q').addEventListener('input', e => { state.q = e.target.value; render(); });
 $('#xchg').addEventListener('change', e => { state.exchange = e.target.value; render(); });
 $('#status').addEventListener('change', e => { state.status = e.target.value; render(); });
-$('#src').addEventListener('change', e => { state.src = e.target.value; render(); });
 $('#csvBtn').addEventListener('click', exportCsv);
 $('#clearBtn').addEventListener('click', clearAll);
 
@@ -403,9 +409,9 @@ $('#tbody').addEventListener('click', e => {
 });
 
 function clearAll(){
-  state.q = ''; state.exchange = ''; state.sector = ''; state.status = ''; state.src = '';
+  state.q = ''; state.exchange = ''; state.sector = ''; state.status = '';
   state.month = ''; state.watchOnly = false;
-  $('#q').value = ''; $('#xchg').value = ''; $('#status').value = ''; $('#src').value = '';
+  $('#q').value = ''; $('#xchg').value = ''; $('#status').value = '';
   $('#watchBtn').classList.remove('on');
   $('#watchBtn').setAttribute('aria-pressed','false');
   document.querySelectorAll('#sectors .chip').forEach((c,i) => c.classList.toggle('on', i === 0));

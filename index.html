@@ -52,11 +52,6 @@
         <input id="q" type="search" placeholder="Search company or ticker" aria-label="Search by company name" autocomplete="off">
       </div>
       <select id="xchg" aria-label="Filter by exchange"><option value="">All exchanges</option></select>
-      <select id="src" aria-label="Filter by data source">
-        <option value="">Any source</option>
-        <option value="live">Live feed only</option>
-        <option value="curated">Curated only</option>
-      </select>
       <select id="status" aria-label="Filter by filing status">
         <option value="">Any status</option>
         <option>Filed</option>
@@ -114,7 +109,7 @@
 
 
   <footer>
-    Rows marked <span class="src-pill live">live</span> are read by an LLM from exchange announcement pages on a weekday cron. Rows marked <span class="src-pill">curated</span> are maintained by hand from exchange announcements, regulator approvals and reported intentions to float. Executive emails are pattern-inferred from the corporate domain; unsourced fields show N/A.
+    Exchanges marked <span class="src-pill live">live</span> are currently read by an LLM from their own announcement pages on a weekday cron; the rest are maintained by hand from exchange announcements, regulator approvals and reported intentions to float. Executive emails are pattern-inferred from the corporate domain; unsourced fields show N/A.
   </footer>
 </main>
 
