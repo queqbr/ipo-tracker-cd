@@ -81,6 +81,18 @@ async function viaBrowser(url, engine = 'chromium'){
     // string, that gets these past the block in the first place.
     const page = await browser.newPage(engine === 'chromium' ? { userAgent: UA, locale: 'en-GB' } : { locale: 'en-GB' });
     await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+
+    // Some pages (SET's IPO cards, observed) only populate on-scroll via an
+    // intersection observer rather than on load. Scrolling costs a few
+    // seconds and is a no-op on pages that don't need it, so it runs always.
+    await page.evaluate(async () => {
+      for (let i = 0; i < 10; i++){
+        window.scrollBy(0, 800);
+        await new Promise(r => setTimeout(r, 300));
+      }
+    });
+    await page.waitForTimeout(1500);
+
     return await page.content();
   } finally {
     await browser.close();

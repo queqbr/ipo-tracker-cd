@@ -8,7 +8,7 @@
    headless-browser strategies to check pages that pass a plain
    fetch with a nav shell but no real content, and trying Firefox
    and WebKit engines against sites that block headless Chromium
-   specifically (see the TADAWUL/SGX/KLSE note below). Run:
+   specifically (see the TADAWUL/SGX note below). Run:
 
      node scripts/probe.js
      USE_BROWSER=1 node scripts/probe.js
@@ -51,23 +51,46 @@ export const SOURCES = [
     url:'https://www.twse.com.tw/rwd/en/company/newlisting?response=html',
     hint:'Plain HTML table: code, company, application date, capital amount, listing-review dates, listing date, underwriter, underwriting price. A row with NO listing date yet is the upcoming/pending case; a row with a listing date already in the past has already listed and should be skipped.'
   },
+  {
+    exchange:'SET',
+    enabled:true,
+    url:'https://www.set.or.th/en/listing/ipo/upcoming-ipo/set',
+    hint:'Per-company cards (below a status-count summary table): company, business description, status, par value, IPO price, number of IPO shares, IPO period, first trading day, financial advisor. Only populates after scrolling, which the browser strategy now always does.',
+    browser:true
+  },
+
+  /* --------------------------------------------------------------
+     TADAWUL and SGX front Akamai, which blocks headless Chromium
+     outright and blocked Firefox/WebKit too after the first request
+     in same-session repeated testing here (looked like first-request
+     leniency, not a real bypass). Left enabled per explicit call: a
+     scheduled cron makes exactly one request per source per day from
+     a fresh runner IP — not the repeated-request pattern that
+     triggered the block in testing — and a blocked run just falls
+     back to curated rows for that exchange, so the downside is
+     bounded. Worth revisiting if the cron shows persistent failures.
+     -------------------------------------------------------------- */
+  {
+    exchange:'TADAWUL',
+    enabled:true,
+    url:'https://www.saudiexchange.sa/wps/portal/saudiexchange/listing/ipos',
+    hint:'Upcoming IPOs module with a Results count and per-listing cards: market, offering size, offering price, offering/closing dates. May include ETF admissions alongside equity IPOs.',
+    browser:true,
+    engine:'firefox'
+  },
+  {
+    exchange:'SGX',
+    enabled:true,
+    url:'https://www.sgx.com/stock-exchange/company-announcements',
+    hint:'General company announcements feed (date, issuer, security, title, category), not filtered to IPOs specifically — look for listing-related titles (offer documents, preliminary prospectuses, admission notices) among routine disclosures.',
+    browser:true,
+    engine:'firefox'
+  },
 
   /* --------------------------------------------------------------
      Everything below stayed on the curated layer after verification
      on 2026-08-30. Re-check periodically.
      -------------------------------------------------------------- */
-  {
-    exchange:'TADAWUL',
-    enabled:false,
-    url:'https://www.saudiexchange.sa/wps/portal/saudiexchange/listing/ipos',
-    hint:'Akamai blocks headless Chromium outright. Firefox/WebKit passed ONCE with a real Upcoming IPOs table, then reverted to the login/captcha gate on every request after (3/3) — looks like first-request leniency on a fresh session rather than a real bypass. Not safe to rely on without confirming a durable path through.'
-  },
-  {
-    exchange:'SGX',
-    enabled:false,
-    url:'https://www.sgx.com/stock-exchange/company-announcements',
-    hint:'Akamai blocks headless Chromium outright. Firefox passed ONCE with a real Company Announcements table, then reverted to the "unsupported browser" page on every request after (2/2). Same first-request-leniency pattern as TADAWUL — not reliable.'
-  },
   {
     exchange:'KLSE',
     enabled:false,
@@ -85,11 +108,5 @@ export const SOURCES = [
     enabled:false,
     url:null,
     hint:'No verified free public upcoming-IPO or new-listing feed found as of 2026-08-30; tested official pages returned effectively empty content.'
-  },
-  {
-    exchange:'SET',
-    enabled:false,
-    url:'https://www.set.or.th/en/listing/ipo/upcoming-ipo/set',
-    hint:'Page loads a status summary table (counts of Effective/Approved/Submitted) but no per-company rows; those load behind a tab click this scraper does not perform.'
   }
 ];
