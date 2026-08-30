@@ -215,6 +215,8 @@ function drawer(r){
         + fact('Timing basis', r.dateNote)
         + fact('Filing status', r.status)
         + fact('Expected valuation', r.valDisp)
+        + fact('Issue price', r.pricePerShare)
+        + fact('Shares offered', r.sharesOffered ? r.sharesOffered.toLocaleString('en-US') : 'N/A')
         + fact('Headquarters', r.hq)
         + fact('Bookrunners', r.bank)
       + '</div>'
@@ -327,12 +329,12 @@ function exportCsv(){
   const rows = filtered();
   if (!rows.length) return toast('Nothing to export');
   const head = ['Company','Ticker','Exchange','Exchange City','Expected Listing Date','Timing Basis','Sector',
-                'Filing Status','Expected Valuation','USD Equivalent (m)','CEO','CEO Email','CEO Email Confidence',
+                'Filing Status','Expected Valuation','USD Equivalent (m)','Issue Price','Shares Offered','CEO','CEO Email','CEO Email Confidence',
                 'CFO','CFO Email','CFO Email Confidence','Headquarters','Bookrunners','Business Description'];
   const cell = v => '"' + String(v ?? 'N/A').replace(/"/g,'""') + '"';
   const body = rows.map(r => [
     r.company, r.ticker || 'N/A', r.exchange, EXCHANGE_NAME[r.exchange] || r.exchange, r.listDate, r.dateNote, r.sector,
-    r.status, r.valDisp, r.valUsd, r.ceo, r.ceoEmail, r.ceoConf || 'N/A',
+    r.status, r.valDisp, r.valUsd, r.pricePerShare || 'N/A', r.sharesOffered || 'N/A', r.ceo, r.ceoEmail, r.ceoConf || 'N/A',
     r.cfo, r.cfoEmail, r.cfoConf || 'N/A', r.hq, r.bank, r.desc
   ].map(cell).join(','));
   const csv = [head.map(cell).join(','), ...body].join('\r\n');

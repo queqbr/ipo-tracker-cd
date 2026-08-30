@@ -51,7 +51,7 @@ const SOURCES = AGENT_SOURCES.filter(s => s.enabled !== false).map(agentSource);
    Validation. A malformed payload is never published.
    ------------------------------------------------------------ */
 const SHAPE = ['sourceType','company','ticker','exchange','listDate','dateNote','sector','status',
-               'valUsd','valDisp','desc','ceo','ceoEmail','cfo','cfoEmail','hq','bank'];
+               'valUsd','valDisp','pricePerShare','sharesOffered','desc','ceo','ceoEmail','cfo','cfoEmail','hq','bank'];
 
 function validate(rows){
   const errs = [];
