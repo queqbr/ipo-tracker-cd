@@ -87,13 +87,11 @@ npm run probe LSE WSE            # a subset
 
 Several exchanges block datacenter IPs or render their calendar client-side, so expect some to fail. Set `browser:true` on those in `scripts/sources.js` (and `engine:'firefox'`/`'webkit'` if Chromium specifically gets blocked), or `enabled:false` to leave an exchange on the curated layer.
 
-**Keys.** `OPENAI_API_KEY` for extraction, added as a repository secret under Settings → Secrets and variables → Actions. Locally:
+**Keys and URLs.** `OPENAI_API_KEY` for extraction. Source URLs aren't committed to this file — this is a public repo, and a couple of them are workarounds (an undocumented data endpoint, a specific query against a regulator's search form) rather than the exchange's own published page, so they live in `SOURCE_URLS_JSON` instead: a JSON object of `{ EXCHANGE_CODE: url }`, one entry per exchange in `scripts/sources.js`. A url containing the literal string `{{YEAR}}` has that substituted with the current year at load time (used by B3's CVM query).
 
-```
-OPENAI_API_KEY=your_key npm run refresh
-```
+Both go in repository secrets under Settings → Secrets and variables → Actions. Locally, copy `.env.local.example` to `.env.local` (gitignored) and fill in real values — `npm run refresh` / `npm run probe` load it automatically via Node's `--env-file-if-exists`.
 
-Without the key an agent source can't run; it fails and that exchange falls back to its curated rows.
+Without `OPENAI_API_KEY` or a given exchange's URL, that agent source can't run; it fails and the exchange falls back to its curated rows.
 
 **Safety rails.** Sources run four at a time. A failing source keeps its curated rows rather than dropping an exchange from the table. A payload failing schema validation exits non-zero. And a run producing fewer than half the seed row count refuses to publish, so a bad night cannot quietly empty the dashboard.
 
