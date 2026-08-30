@@ -124,6 +124,10 @@ export const SOURCES = [
     exchange:'JSE',
     enabled:false,
     url:urlFor('JSE'),
+    // Short, public-facing reason — shown on the live site. Keep this
+    // separate from `hint` below, which is internal engineering notes
+    // for future debugging and not meant for an end-user audience.
+    note:'Requires a paid enterprise data subscription — no free public feed exists.',
     hint:'Page loads and the mechanism works, but the default filter is "today only" with no discovered URL parameter to widen the date range, so every run would legitimately return zero rows. A third-party workaround (a SENS mirror on a financial news site) was tried on 2026-08-30 and ruled out: Cloudflare escalated from a JS challenge to a flat "blocked" response after a handful of automated requests, with no interactive widget ever rendered to solve — reputation/rate-based blocking, not a fingerprint check like the Akamai sites below, so a browser-engine swap doesn\'t help and it would likely fail the same way on a cron. No free path found as of 2026-08-30 — the JSE\'s own RNS/SENS feed is a licensed product behind authentication (see README), same conclusion as the original assessment. A paid enterprise data subscription looks like the only real fix.'
   },
 

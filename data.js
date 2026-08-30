@@ -10,6 +10,13 @@
    ============================================================ */
 
 window.SEED = {
+// Static mirror of what data.json's liveExchanges/curatedOnly report live —
+// only used for the offline (file://) fallback, so it won't self-update;
+// keep in sync with scripts/sources.js by hand if that ever drifts.
+LIVE_EXCHANGES: ['LSE','WSE','XETRA','DFM','TWSE','SET','TADAWUL','SGX','KLSE','B3'],
+CURATED_ONLY: [
+  { exchange:'JSE', note:'Requires a paid enterprise data subscription — no free public feed exists.' }
+],
 REGION: {
   LSE:'eu', WSE:'eu', XETRA:'eu',
   DFM:'mena', TADAWUL:'mena',

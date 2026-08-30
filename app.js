@@ -13,6 +13,18 @@ const DOMAINS       = window.SEED.DOMAINS;
 
 let DATA = [];
 
+/* Live/historical/needs-subscription is an exchange-level fact from the
+   payload (which agent sources are currently enabled), not something
+   derived from any individual row — a source can come back empty on a
+   given run without losing its "live" capability. */
+let LIVE_EXCHANGES = new Set(window.SEED.LIVE_EXCHANGES || []);
+let CURATED_NOTES  = new Map((window.SEED.CURATED_ONLY || []).map(c => [c.exchange, c.note]));
+
+function applyExchangeStatus(payload){
+  LIVE_EXCHANGES = new Set(payload.liveExchanges || window.SEED.LIVE_EXCHANGES || []);
+  CURATED_NOTES  = new Map((payload.curatedOnly || window.SEED.CURATED_ONLY || []).map(c => [c.exchange, c.note]));
+}
+
 /* Attach the IR fallback route. Where a filing does not name a
    CFO, the drawer offers the company IR mailbox rather than
    naming a person the source does not name. */
@@ -53,6 +65,7 @@ async function loadData(isPoll){
     lastHash = h;
     const payload = JSON.parse(text);
     DATA = hydrate(Array.isArray(payload) ? payload : payload.listings);
+    if (!Array.isArray(payload)) applyExchangeStatus(payload);
     return true;
   } catch (e) {
     if (!DATA.length){ DATA = hydrate(window.SEED.DATA); lastSync = new Date(); return true; }
@@ -98,14 +111,6 @@ const store = (() => {
 
 let watch = new Set(JSON.parse(store.get('ipo.watchlist') || '[]'));
 const state = { q:'', exchange:'', sector:'', status:'', month:'', watchOnly:false, sort:'listDate', dir:1, open:new Set() };
-
-/* Live/historical is tracked per exchange, not per listing: an exchange
-   counts as live if any of its current rows came from the agent scraper
-   this run. Historical exchanges get no special marking — they're the
-   baseline, not a called-out state. */
-function liveExchanges(){
-  return new Set(DATA.filter(r => r.sourceType === 'live').map(r => r.exchange));
-}
 
 const $ = s => document.querySelector(s);
 const NA = v => (!v || v === 'N/A');
@@ -246,9 +251,19 @@ function person(role, name, email, conf){
   return out + '</div>';
 }
 
+/* Exchange-level status badge: "live" if the exchange has an enabled
+   agent source (capability, not whether this run found fresh rows),
+   a "needs subscription" note if it's flagged as paid-data-only, or
+   nothing at all — the unmarked baseline for everything else. */
+function exchangeBadge(exchange){
+  if (LIVE_EXCHANGES.has(exchange)) return ' <span class="src-pill live">live</span>';
+  const note = CURATED_NOTES.get(exchange);
+  if (note) return ' <span class="src-pill locked" title="' + esc(note) + '">needs subscription</span>';
+  return '';
+}
+
 function render(){
   const rows = filtered();
-  const live = liveExchanges();
   const tb = $('#tbody');
   tb.innerHTML = rows.map(r => {
     const on = state.open.has(r.company);
@@ -259,7 +274,7 @@ function render(){
         + '<svg width="13" height="13" viewBox="0 0 24 24" fill="' + (starred?'currentColor':'none') + '" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.6 5.6 6.4.8-4.7 4.3 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.4l6.4-.8z"/></svg></button></td>'
       + '<td><div class="co">' + esc(r.company) + '</div><div class="co-sub">' + esc(r.ticker || 'N/A') + ' &middot; ' + esc(r.status) + '</div></td>'
       + '<td><div class="xchg"><i class="dot" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')"></i>' + esc(r.exchange)
-        + (live.has(r.exchange) ? ' <span class="src-pill live">live</span>' : '') + '</div>'
+        + exchangeBadge(r.exchange) + '</div>'
         + '<div class="co-sub" style="margin-left:14px">' + esc((EXCHANGE_NAME[r.exchange] || r.exchange)) + '</div></td>'
       + '<td><div class="date">' + fmtDate(r.listDate) + '<small>' + esc(r.dateNote) + '</small></div></td>'
       + '<td><span class="sector">' + esc(r.sector) + '</span></td>'
@@ -310,9 +325,9 @@ function renderStats(){
 
 function renderControls(){
   const xs = [...new Set(DATA.map(r => r.exchange))].sort();
-  const live = liveExchanges();
   $('#xchg').innerHTML = '<option value="">All exchanges</option>'
-    + xs.map(x => '<option value="' + x + '">' + x + ' — ' + (EXCHANGE_NAME[x] || x) + (live.has(x) ? ' (live)' : '') + '</option>').join('');
+    + xs.map(x => '<option value="' + x + '">' + x + ' — ' + (EXCHANGE_NAME[x] || x)
+        + (LIVE_EXCHANGES.has(x) ? ' (live)' : CURATED_NOTES.has(x) ? ' (needs subscription)' : '') + '</option>').join('');
   const ss = [...new Set(DATA.map(r => r.sector))].sort();
   $('#sectors').innerHTML = '<button class="chip' + (state.sector===''?' on':'') + '" data-sector="">All sectors</button>'
     + ss.map(s => '<button class="chip" data-sector="' + esc(s) + '">' + esc(s) + '</button>').join('');

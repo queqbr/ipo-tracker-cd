@@ -240,4 +240,5 @@
   background:#eef0f3;color:var(--ink-3);white-space:nowrap;
 }
 .src-pill.live{background:var(--verified-soft);color:var(--verified);}
+.src-pill.locked{background:var(--inferred-soft);color:var(--inferred);cursor:help;}
 footer .src-pill{vertical-align:1px;}
