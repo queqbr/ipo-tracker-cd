@@ -123,7 +123,9 @@ const NA = v => (!v || v === 'N/A');
    3. HELPERS
    ============================================================ */
 function fmtDate(iso){
+  if (!iso || iso === 'N/A') return 'N/A';
   const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return 'N/A';
   return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
 }
 function monthKey(iso){ return iso.slice(0,7); }
@@ -177,7 +179,7 @@ function filtered(){
       if (!B && A) return -1;
       return (A - B) * d;
     }
-    if (k === 'ceo' || k === 'cfo'){                 // push N/A to the bottom either way
+    if (k === 'ceo' || k === 'cfo' || k === 'listDate'){ // push N/A to the bottom either way
       const an = NA(A), bn = NA(B);
       if (an && !bn) return 1;
       if (bn && !an) return -1;
@@ -296,9 +298,12 @@ function render(){
 }
 
 function renderRail(){
-  const keys = [...new Set(DATA.map(r => monthKey(r.listDate)))].sort();
+  // Rows with no known listing date have no real month to bucket into —
+  // excluded here rather than producing a bogus "Invalid Date" column.
+  const dated = DATA.filter(r => r.listDate && r.listDate !== 'N/A');
+  const keys = [...new Set(dated.map(r => monthKey(r.listDate)))].sort();
   $('#rail').innerHTML = keys.map(k => {
-    const items = DATA.filter(r => monthKey(r.listDate) === k);
+    const items = dated.filter(r => monthKey(r.listDate) === k);
     const pips = items.map(r => '<div class="pip" style="background:var(--' + (REGION[r.exchange] || 'muted') + ')" title="' + esc(r.company) + '"></div>').join('');
     return '<button class="bucket' + (state.month === k ? ' on' : '') + '" data-month="' + k + '" '
       + 'aria-pressed="' + (state.month === k) + '" title="' + items.length + ' listing(s) in ' + monthLabel(k) + '">'
