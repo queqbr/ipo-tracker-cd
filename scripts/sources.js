@@ -43,6 +43,12 @@ export const SOURCES = [
     hint:'Latest Market Announcements area. The default view is filtered to today only, so most runs will legitimately see zero disclosures — that is expected, not a broken source.',
     browser:true
   },
+  {
+    exchange:'TWSE',
+    enabled:true,
+    url:'https://www.twse.com.tw/rwd/en/company/newlisting?response=html',
+    hint:'Plain HTML table: code, company, application date, capital amount, listing-review dates, listing date, underwriter, underwriting price. A row with NO listing date yet is the upcoming/pending case; a row with a listing date already in the past has already listed and should be skipped.'
+  },
 
   /* --------------------------------------------------------------
      Everything below stayed on the curated layer after verification
@@ -76,12 +82,6 @@ export const SOURCES = [
     enabled:false,
     url:'https://www.sgx.com/securities/company-announcements',
     hint:'Akamai returns Access Denied to both plain and headless-browser requests.'
-  },
-  {
-    exchange:'TWSE',
-    enabled:false,
-    url:'https://www.twse.com.tw/en/listed/listed/new-listing.html',
-    hint:'Page loads but only the Year/Type filter form is present; the results table is populated by clicking Query, which this scraper does not do.'
   },
   {
     exchange:'SET',
