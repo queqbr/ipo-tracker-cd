@@ -51,7 +51,7 @@ const SOURCES = AGENT_SOURCES.filter(s => s.enabled !== false).map(agentSource);
    Validation. A malformed payload is never published.
    ------------------------------------------------------------ */
 const SHAPE = ['sourceType','company','ticker','exchange','listDate','dateNote','sector','status',
-               'valUsd','valDisp','desc','ceo','ceoEmail','cfo','cfoEmail','source','hq','bank'];
+               'valUsd','valDisp','desc','ceo','ceoEmail','cfo','cfoEmail','hq','bank'];
 
 function validate(rows){
   const errs = [];
@@ -127,7 +127,12 @@ async function main(){
     JSON.stringify({
       generated: new Date().toISOString(),
       counts: { total: rows.length, live, curated: rows.length - live },
+      // Capability, not this run's result: every exchange with an enabled
+      // agent source, regardless of whether it happened to return fresh
+      // rows today. A source with a documented reason it can't run at all
+      // (currently just JSE) carries that reason through instead.
       liveExchanges: SOURCES.flatMap(s => s.exchanges),
+      curatedOnly: AGENT_SOURCES.filter(s => s.enabled === false && s.note).map(s => ({ exchange: s.exchange, note: s.note })),
       listings: rows
     }, null, 2)
   );

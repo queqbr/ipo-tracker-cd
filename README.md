@@ -52,15 +52,13 @@ Local preview: `python3 -m http.server 8000`, then open `http://localhost:8000`.
 
 ## Data
 
-Two layers, and every row says which it belongs to. Both cover the same eleven exchanges — the split is about how fresh a row is, not which market it's on.
+Two layers, tracked per exchange rather than per row. Both cover the same eleven exchanges — the split is about how fresh an exchange's data is, not which market it's on.
 
-**Live** — read directly off each exchange's own site by an LLM (the agent layer, below) on the weekday cron, no CSS selectors involved.
+**Live** — read directly off the exchange's own site by an LLM (the agent layer, below) on the weekday cron, no CSS selectors involved. The exchange picker and a small badge next to the exchange name mark which exchanges are currently live.
 
-**Curated** — the hand-maintained fallback in `data.js`. Whenever an exchange's live source fails for a given run, that exchange's rows stay on whatever was last curated or last successfully scraped, rather than the row disappearing from the table.
+**Historical (curated internally)** — the hand-maintained baseline in `data.js`. Whenever an exchange's live source fails for a given run, that exchange's rows stay on whatever was last curated or last successfully scraped, rather than the row disappearing from the table. This is the unmarked default state — only live exchanges get a badge, so historical data doesn't read as a called-out warning.
 
-Filter to Live feed only or Curated only in the toolbar to see the split.
-
-Every row, live or curated, carries a `status` field distinguishing what has been filed from what has only been reported:
+Every row carries a `status` field distinguishing what has been filed from what has only been reported:
 
 | Status | Meaning |
 |---|---|

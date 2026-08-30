@@ -48,7 +48,7 @@ Each element of "listings" must have exactly these keys:
 Rules, in order of importance:
 1. Never invent a value. If the page does not state something, use "N/A" (or 0 for valUsd). A page with no IPO announcements returns {"listings": []}.
 2. Never invent an executive name. This matters more than any other field.
-3. Only include offerings that have not yet listed. Skip completed listings, delistings, results announcements, bond issues and secondary placings.
+3. Only include equity IPOs of operating companies that have not yet listed. Skip completed listings, delistings, results announcements, bond issues, secondary placings, and ETFs/ETPs/index funds/other collective investment vehicles — this schema is for companies going public, not funds listing new units.
 4. Map status honestly: "Approved" when the exchange or regulator has cleared it, "Filed" when a prospectus or application is lodged, "Announced" when the company has published an intention to float, "Reported" when the page is only reporting rumour.
 5. Translate names and descriptions into English, but leave tickers and currency codes as published.
 6. Dates must be YYYY-MM-DD. If the page gives only a month or quarter, use "N/A" and say so in dateNote.`;
@@ -67,6 +67,10 @@ function coerce(row, exchange){
   if (!row || typeof row !== 'object') return { ok:false, why:'not an object' };
   const company = s(row.company);
   if (company === 'N/A' || company.length < 2) return { ok:false, why:'no company name' };
+  // Backstop for rule 3 above: catch a fund slipping through despite the
+  // system prompt, rather than relying on instruction-following alone.
+  if (/\bETFs?\b|\bETPs?\b|exchange[- ]traded fund|index fund|unit trust/i.test(company))
+    return { ok:false, why:'ETF/fund, not a company IPO' };
 
   const listDate = s(row.listDate);
   if (listDate !== 'N/A' && !/^\d{4}-\d{2}-\d{2}$/.test(listDate))
@@ -89,11 +93,6 @@ function coerce(row, exchange){
     desc:     s(row.desc),
     ceo:      s(row.ceo), ceoEmail:'N/A', ceoConf:null,
     cfo:      s(row.cfo), cfoEmail:'N/A', cfoConf:null,
-    // Deliberately not the fetch URL: some sources are workarounds (an
-    // undocumented data endpoint, a specific regulator query) rather than
-    // the exchange's own published page, and this field renders straight
-    // into the public site's row detail view and CSV export.
-    source:   `${exchange} — agent extraction`,
     hq:       s(row.hq),
     bank:     s(row.bank)
   }};
@@ -118,7 +117,11 @@ export async function extractListings({ text, exchange, url, hint }){
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 8000,
+      // Some sources (TWSE's full listing table, for one) run to 30-40+ rows;
+      // 8000 was tight enough to truncate the response mid-JSON on at least
+      // one real run, which surfaces as "model did not return valid JSON"
+      // with no way to tell truncation apart from a genuine formatting miss.
+      max_tokens: 16000,
       temperature: 0,
       response_format: { type: 'json_object' },
       messages: [
@@ -132,10 +135,11 @@ export async function extractListings({ text, exchange, url, hint }){
 
   const data = await res.json();
   const raw  = data.choices?.[0]?.message?.content || '';
+  const finishReason = data.choices?.[0]?.finish_reason;
 
   let parsed;
   try { parsed = JSON.parse(stripFences(raw)); }
-  catch { throw new Error('model did not return valid JSON'); }
+  catch { throw new Error(`model did not return valid JSON (finish_reason: ${finishReason}, ${raw.length} chars)`); }
   if (Array.isArray(parsed?.listings)) parsed = parsed.listings;
   if (!Array.isArray(parsed)) throw new Error('model did not return a listings array');
 
