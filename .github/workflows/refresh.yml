@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+
       - name: Regenerate data.json
         env:
           IPO_API_KEY: ${{ secrets.IPO_API_KEY }}

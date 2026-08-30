@@ -9,6 +9,10 @@
                     egresses from a different IP than the runner
      3. browser   — local Playwright, for pages that need a real
                     browser. Off by default; set USE_BROWSER=1.
+                    Defaults to Chromium; some sites fingerprint and
+                    block headless Chromium specifically while
+                    letting Firefox or WebKit through, selectable
+                    per-source via engine:'firefox'|'webkit'.
 
    Most exchange sites block datacenter IPs or render their
    calendar client-side, so a single strategy will not cover
@@ -58,13 +62,37 @@ async function viaJina(url){
 }
 
 /* Playwright, only when explicitly enabled. Install with:
-     npm i -D playwright && npx playwright install chromium   */
-async function viaBrowser(url){
-  const { chromium } = await import('playwright');
-  const browser = await chromium.launch();
+     npm i -D playwright && npx playwright install chromium firefox webkit
+
+   Some sites (Akamai/Cloudflare-fronted ones observed so far: SGX,
+   TADAWUL, KLSE) fingerprint and block headless Chromium specifically
+   while letting Firefox or WebKit through cleanly. Default stays
+   chromium; set engine:'firefox' (or 'webkit') per-source in
+   sources.js for ones that need it. */
+async function viaBrowser(url, engine = 'chromium'){
+  const playwright = await import('playwright');
+  const launcher = playwright[engine];
+  if (!launcher) throw new Error(`unknown engine "${engine}"`);
+  const browser = await launcher.launch();
   try {
-    const page = await browser.newPage({ userAgent: UA, locale: 'en-GB' });
+    // Each engine's own default UA is left alone for firefox/webkit — pairing
+    // a spoofed Chrome UA with a non-Chrome TLS/JS fingerprint reads as more
+    // suspicious than either alone, and it's the fingerprint, not the UA
+    // string, that gets these past the block in the first place.
+    const page = await browser.newPage(engine === 'chromium' ? { userAgent: UA, locale: 'en-GB' } : { locale: 'en-GB' });
     await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+
+    // Some pages (SET's IPO cards, observed) only populate on-scroll via an
+    // intersection observer rather than on load. Scrolling costs a few
+    // seconds and is a no-op on pages that don't need it, so it runs always.
+    await page.evaluate(async () => {
+      for (let i = 0; i < 10; i++){
+        window.scrollBy(0, 800);
+        await new Promise(r => setTimeout(r, 300));
+      }
+    });
+    await page.waitForTimeout(1500);
+
     return await page.content();
   } finally {
     await browser.close();
@@ -100,16 +128,24 @@ export function toText(html){
    Public entry point. Returns { text, strategy }.
    ------------------------------------------------------------ */
 export async function fetchPage(url, opts = {}){
-  const strategies = [
-    ['plain',   plain],
-    ['reader',  viaJina],
-    ...(process.env.USE_BROWSER === '1' || opts.browser ? [['browser', viaBrowser]] : [])
-  ];
+  // A source marked browser:true skips straight to the headless browser
+  // rather than joining the escalation below — some pages return a
+  // full-length nav shell on a plain fetch that clears the 300-char bar
+  // without containing any real content, which would otherwise strand
+  // the source on garbage.
+  const browser = () => viaBrowser(url, opts.engine);
+  const strategies = opts.browser
+    ? [['browser', browser]]
+    : [
+        ['plain',   () => plain(url)],
+        ['reader',  () => viaJina(url)],
+        ...(process.env.USE_BROWSER === '1' ? [['browser', browser]] : [])
+      ];
 
   const failures = [];
   for (const [name, fn] of strategies){
     try {
-      const raw  = await withRetry(() => fn(url), name === 'plain' ? 2 : 1);
+      const raw  = await withRetry(() => fn(), name === 'plain' ? 2 : 1);
       const text = toText(raw);
       if (text.length < 300) throw new Error(`only ${text.length} chars of text`);
       return { text, strategy: name };
