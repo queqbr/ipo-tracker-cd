@@ -25,7 +25,7 @@ console.log('-'.repeat(96));
 let ok = 0;
 for (const s of list){
   try {
-    const { text, strategy } = await fetchPage(s.url, { browser: s.browser });
+    const { text, strategy } = await fetchPage(s.url, { browser: s.browser, engine: s.engine });
     ok++;
     const preview = text.slice(0, 60).replace(/\s+/g, ' ');
     console.log(pad(s.exchange, 10) + pad(strategy, 12) + pad(text.length, 9) + preview);

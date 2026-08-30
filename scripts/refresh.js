@@ -6,11 +6,12 @@
    weekday cron; the workflow commits the result, the host
    redeploys, and the live page picks it up on its next poll.
 
-   Live source:  SEC EDGAR via API Ninjas (NASDAQ, NYSE, AMEX)
-   Curated:      the eleven non-US exchanges held in data.js
+   Every row comes from either the agent layer (scripts/sources.js,
+   read live by an LLM) or the hand-maintained curated seed in
+   data.js, which an agent source falls back to when it fails.
 
-   Requires IPO_API_KEY. Locally:
-     IPO_API_KEY=xxx node scripts/refresh.js
+   Requires OPENAI_API_KEY for the agent layer. Locally:
+     OPENAI_API_KEY=xxx node scripts/refresh.js
    In CI it comes from the repository secret of the same name.
    ============================================================ */
 
@@ -18,113 +19,6 @@ import fs from 'node:fs/promises';
 import { fetchPage }       from './lib/fetch-page.js';
 import { extractListings } from './lib/extract.js';
 import { SOURCES as AGENT_SOURCES } from './sources.js';
-
-const API = 'https://api.api-ninjas.com/v1/ipocalendar';
-const KEY = process.env.IPO_API_KEY;
-const LOOKBACK_DAYS = 270;   // window of recent S-1 filings to treat as the live pipeline
-
-/* ------------------------------------------------------------
-   SIC code to the dashboard's sector taxonomy.
-   Ranges checked in order, first match wins.
-   ------------------------------------------------------------ */
-const SIC_SECTOR = [
-  [[2833, 2836], 'Biotech'],
-  [[8731, 8734], 'Biotech'],
-  [[3826, 3827], 'Biotech'],
-  [[3674, 3674], 'Semiconductors'],
-  [[3559, 3559], 'Semiconductors'],
-  [[7370, 7379], 'Technology'],
-  [[3570, 3579], 'Technology'],
-  [[6021, 6221], 'FinTech'],
-  [[6770, 6799], 'FinTech'],
-  [[8000, 8093], 'Healthcare'],
-  [[5122, 5122], 'Healthcare'],
-  [[1311, 1389], 'Energy'],
-  [[4911, 4939], 'Energy'],
-  [[1000, 1099], 'Metals & Mining'],
-  [[3310, 3399], 'Metals & Mining'],
-  [[4812, 4899], 'Telecom'],
-  [[6500, 6552], 'Real Estate'],
-  [[2000, 2111], 'Consumer'],
-  [[5200, 5990], 'Consumer'],
-  [[3400, 3569], 'Industrials'],
-  [[1600, 1799], 'Industrials'],
-  [[4400, 4789], 'Industrials']
-];
-
-function sectorFor(sic, industry){
-  const n = parseInt(sic, 10);
-  if (!Number.isNaN(n)){
-    for (const [[lo, hi], sector] of SIC_SECTOR){
-      if (n >= lo && n <= hi) return sector;
-    }
-  }
-  if (/blank[- ]check/i.test(industry || '')) return 'FinTech';
-  return 'Other';
-}
-
-const STATUS = { filed:'Filed', amended:'Filed', priced:'Approved', listed:'Announced' };
-const iso = d => d.toISOString().slice(0, 10);
-
-/* ------------------------------------------------------------
-   Adapter: SEC EDGAR. Returns rows in the shape data.js uses.
-   ------------------------------------------------------------ */
-async function fetchSecEdgar(){
-  if (!KEY) throw new Error('IPO_API_KEY not set');
-
-  // Companies in registration have no listing_date until pricing, so a
-  // forward window on that field returns almost nothing. Filter on
-  // filing_date instead and let listing_date be absent.
-  const start = new Date(Date.now() - LOOKBACK_DAYS * 864e5);
-  const url = API
-    + `?date_start=${iso(start)}&date_end=${iso(new Date(Date.now() + 864e5))}`
-    + '&date_field=filing_date'
-    + '&status=filed,amended,priced'
-    + '&deal_type=ipo,direct_listing'
-    + '&limit=500';
-
-  const res = await fetch(url, { headers: { 'X-Api-Key': KEY } });
-  if (!res.ok) throw new Error(`API ${res.status}: ${(await res.text()).slice(0, 160)}`);
-
-  const raw = await res.json();
-  if (!Array.isArray(raw)) throw new Error('unexpected payload shape');
-
-  return raw
-    .filter(r => r.name && r.exchange)
-    .map(r => ({
-      sourceType:'live',
-      company:  r.name.replace(/,?\s+(Inc|Corp|Corporation|Ltd|Limited|LLC|Co)\.?$/i, '').trim(),
-      ticker:   r.ticker || 'N/A',
-      exchange: r.exchange,
-      listDate: r.listing_date || r.priced_date || 'N/A',
-      dateNote: r.listing_date
-        ? (r.listing_date_verified ? 'Exchange confirmed' : 'Derived from 424B filing')
-        : 'Date not yet set',
-      sector:   sectorFor(r.sic_code, r.industry),
-      status:   STATUS[r.status] || 'Reported',
-
-      // The free tier returns no deal size. Left unavailable rather than
-      // estimated; the dashboard renders N/A and sorts these to the
-      // bottom of the valuation column in either direction.
-      valUsd: 0,
-      valDisp:'N/A',
-
-      desc: `SEC-registered offering on ${r.exchange}. `
-          + `Industry: ${r.industry || 'not classified'}${r.sic_code ? ` (SIC ${r.sic_code})` : ''}. `
-          + `Governing form ${r.form_type || 'S-1'}`
-          + (r.filing_date ? `, first filed ${r.filing_date}` : '')
-          + (r.priced_date ? `, priced ${r.priced_date}` : '')
-          + `. Deal type ${r.deal_type || 'ipo'}. `
-          + 'Officer detail sits in the prospectus rather than the EDGAR index and is populated by hand.',
-
-      ceo:'N/A', ceoEmail:'N/A', ceoConf:null,
-      cfo:'N/A', cfoEmail:'N/A', cfoConf:null,
-
-      source: r.sec_filing_url || 'SEC EDGAR',
-      hq:'N/A',
-      bank:'N/A'
-    }));
-}
 
 /* ------------------------------------------------------------
    Agent sources. Each fetches one exchange page and has an LLM
@@ -140,7 +34,7 @@ function agentSource(cfg){
     name: `${cfg.exchange} (agent)`,
     exchanges: [cfg.exchange],
     async fetch(){
-      const { text, strategy } = await fetchPage(cfg.url, { browser: cfg.browser });
+      const { text, strategy } = await fetchPage(cfg.url, { browser: cfg.browser, engine: cfg.engine });
       const { rows, dropped } = await extractListings({
         text, exchange: cfg.exchange, url: cfg.url, hint: cfg.hint
       });
@@ -151,10 +45,7 @@ function agentSource(cfg){
   };
 }
 
-const SOURCES = [
-  { name:'SEC EDGAR', exchanges:['NASDAQ','NYSE','AMEX'], fetch: fetchSecEdgar },
-  ...AGENT_SOURCES.filter(s => s.enabled !== false).map(agentSource)
-];
+const SOURCES = AGENT_SOURCES.filter(s => s.enabled !== false).map(agentSource);
 
 /* ------------------------------------------------------------
    Validation. A malformed payload is never published.

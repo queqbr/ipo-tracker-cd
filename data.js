@@ -11,14 +11,12 @@
 
 window.SEED = {
 REGION: {
-  NASDAQ:'us', NYSE:'us', AMEX:'us',
   LSE:'eu', WSE:'eu', XETRA:'eu',
   DFM:'mena', TADAWUL:'mena',
   JSE:'afr', B3:'afr',
   SGX:'apac', TWSE:'apac', SET:'apac', KLSE:'apac'
 },
 EXCHANGE_NAME: {
-  NASDAQ:'New York', NYSE:'New York', AMEX:'New York',
   LSE:'London', WSE:'Warsaw', XETRA:'Frankfurt', DFM:'Dubai', TADAWUL:'Riyadh',
   JSE:'Johannesburg', B3:'São Paulo', SGX:'Singapore', TWSE:'Taipei',
   SET:'Bangkok', KLSE:'Kuala Lumpur'
