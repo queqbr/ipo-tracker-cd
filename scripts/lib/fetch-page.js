@@ -100,11 +100,17 @@ export function toText(html){
    Public entry point. Returns { text, strategy }.
    ------------------------------------------------------------ */
 export async function fetchPage(url, opts = {}){
-  const strategies = [
-    ['plain',   plain],
-    ['reader',  viaJina],
-    ...(process.env.USE_BROWSER === '1' || opts.browser ? [['browser', viaBrowser]] : [])
-  ];
+  // A source marked browser:true skips straight to headless Chromium rather
+  // than joining the escalation below — some pages return a full-length nav
+  // shell on a plain fetch that clears the 300-char bar without containing
+  // any real content, which would otherwise strand the source on garbage.
+  const strategies = opts.browser
+    ? [['browser', viaBrowser]]
+    : [
+        ['plain',   plain],
+        ['reader',  viaJina],
+        ...(process.env.USE_BROWSER === '1' ? [['browser', viaBrowser]] : [])
+      ];
 
   const failures = [];
   for (const [name, fn] of strategies){
