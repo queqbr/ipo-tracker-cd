@@ -61,7 +61,7 @@ function stripFences(s){
    Row validation. Anything malformed is dropped with a reason
    rather than allowed into data.json.
    ------------------------------------------------------------ */
-function coerce(row, exchange, url){
+function coerce(row, exchange){
   const s = v => (typeof v === 'string' && v.trim()) ? v.trim() : 'N/A';
 
   if (!row || typeof row !== 'object') return { ok:false, why:'not an object' };
@@ -89,7 +89,11 @@ function coerce(row, exchange, url){
     desc:     s(row.desc),
     ceo:      s(row.ceo), ceoEmail:'N/A', ceoConf:null,
     cfo:      s(row.cfo), cfoEmail:'N/A', cfoConf:null,
-    source:   url,
+    // Deliberately not the fetch URL: some sources are workarounds (an
+    // undocumented data endpoint, a specific regulator query) rather than
+    // the exchange's own published page, and this field renders straight
+    // into the public site's row detail view and CSV export.
+    source:   `${exchange} — agent extraction`,
     hq:       s(row.hq),
     bank:     s(row.bank)
   }};
@@ -137,7 +141,7 @@ export async function extractListings({ text, exchange, url, hint }){
 
   const rows = [], dropped = [];
   for (const r of parsed){
-    const c = coerce(r, exchange, url);
+    const c = coerce(r, exchange);
     c.ok ? rows.push(c.row) : dropped.push(`${r?.company || '?'}: ${c.why}`);
   }
 
