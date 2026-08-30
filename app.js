@@ -61,7 +61,7 @@ async function loadData(isPoll){
     const text = await res.text();
     const h = hash(text);
     lastSync = new Date();
-    if (isPoll && h === lastHash) return false;   // unchanged, leave the view alone
+    if (h === lastHash) return false;   // unchanged, leave the view alone
     lastHash = h;
     const payload = JSON.parse(text);
     DATA = hydrate(Array.isArray(payload) ? payload : payload.listings);
@@ -87,7 +87,7 @@ async function refresh(isPoll){
   stampSync();
   if (changed){
     renderStats(); renderControls(); renderRail(); render();
-    if (isPoll) toast('Listings updated');
+    toast('Listings updated');
   } else if (!isPoll){
     toast('Already up to date');
   }
