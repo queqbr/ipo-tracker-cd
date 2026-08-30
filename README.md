@@ -79,7 +79,25 @@ IPO_API_KEY=your_key npm run refresh
 
 Without the key the script still runs, logs the failure and writes the curated rows on their own. Note the free tier is non-commercial.
 
-**Adding another exchange.** Write one function returning rows in the shape `data.js` uses and push it onto `SOURCES` with the exchange codes it owns. The merge, validation and render layers need no changes.
+**The agent layer.** The eleven non-US exchanges are read by an LLM rather than by CSS selectors. `scripts/lib/fetch-page.js` retrieves the page, escalating through a plain request, a reader proxy that renders JavaScript, and headless Chromium. `scripts/lib/extract.js` hands the text to OpenAI's API with the row schema and instructions never to invent a value. Every returned row is validated here, so anything malformed is dropped rather than published.
+
+Selectors were the wrong tool for these sources. The pages are published in four languages and redesign without notice, and a class rename breaks a selector silently while a model reading the text does not care about markup.
+
+**Check what is reachable first:**
+
+```
+npm run probe                    # all sources
+USE_BROWSER=1 npm run probe      # include headless Chromium
+npm run probe LSE WSE            # a subset
+```
+
+Several exchanges block datacenter IPs or render their calendar client-side, so expect some to fail. Set `browser:true` on those in `scripts/sources.js`, or `enabled:false` to leave an exchange on the curated layer. The URLs in that file are starting points and have not been verified from this machine.
+
+**Keys.** `OPENAI_API_KEY` for extraction, `IPO_API_KEY` for the SEC source. Both go in repository secrets under the same names.
+
+**Safety rails.** Sources run four at a time. A failing source keeps its curated rows rather than dropping an exchange from the table. A payload failing schema validation exits non-zero. And a run producing fewer than half the seed row count refuses to publish, so a bad night cannot quietly empty the dashboard.
+
+**Adding another exchange.** Append an entry to `scripts/sources.js` with an exchange code, a URL and a one-line hint. Nothing else changes.
 
 **Offline fallback.** Opened from the file system, the app skips the fetch and reads the seed array in `data.js` directly, so double-clicking `index.html` still works.
 
