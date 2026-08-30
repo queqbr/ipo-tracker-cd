@@ -61,7 +61,7 @@ async function loadData(isPoll){
     const text = await res.text();
     const h = hash(text);
     lastSync = new Date();
-    if (isPoll && h === lastHash) return false;   // unchanged, leave the view alone
+    if (h === lastHash) return false;   // unchanged, leave the view alone
     lastHash = h;
     const payload = JSON.parse(text);
     DATA = hydrate(Array.isArray(payload) ? payload : payload.listings);
@@ -87,7 +87,7 @@ async function refresh(isPoll){
   stampSync();
   if (changed){
     renderStats(); renderControls(); renderRail(); render();
-    if (isPoll) toast('Listings updated');
+    toast('Listings updated');
   } else if (!isPoll){
     toast('Already up to date');
   }
@@ -111,6 +111,10 @@ const store = (() => {
 
 let watch = new Set(JSON.parse(store.get('ipo.watchlist') || '[]'));
 const state = { q:'', exchange:'', sector:'', status:'', month:'', watchOnly:false, sort:'listDate', dir:1, open:new Set() };
+// A third click on the active column heading returns state.sort to null —
+// a genuine unsorted state (natural load order, already date-ascending
+// since that's how data.json is written) distinct from either direction,
+// rather than just toggling asc/desc forever with no way back.
 
 const $ = s => document.querySelector(s);
 const NA = v => (!v || v === 'N/A');
@@ -166,7 +170,7 @@ function filtered(){
     return true;
   });
   const k = state.sort, d = state.dir;
-  rows.sort((a,b) => {
+  if (k) rows.sort((a,b) => {
     let A = a[k], B = b[k];
     if (k === 'valUsd'){
       if (!A && B) return 1;                      // unknown deal size sorts last
@@ -382,8 +386,9 @@ document.querySelector('thead').addEventListener('click', e => {
   const th = e.target.closest('th.sortable');
   if (!th) return;
   const k = th.dataset.k;
-  if (state.sort === k) state.dir *= -1;
-  else { state.sort = k; state.dir = 1; }
+  if (state.sort !== k) { state.sort = k; state.dir = 1; }        // new column: ascending
+  else if (state.dir === 1) state.dir = -1;                       // 2nd click: descending
+  else state.sort = null;                                          // 3rd click: back to unsorted
   render();
 });
 document.querySelectorAll('thead th.sortable').forEach(th => {
@@ -414,7 +419,7 @@ $('#tbody').addEventListener('click', e => {
 
 function clearAll(){
   state.q = ''; state.exchange = ''; state.sector = ''; state.status = '';
-  state.month = ''; state.watchOnly = false;
+  state.month = ''; state.watchOnly = false; state.sort = null; state.dir = 1;
   $('#q').value = ''; $('#xchg').value = ''; $('#status').value = '';
   $('#watchBtn').classList.remove('on');
   $('#watchBtn').setAttribute('aria-pressed','false');
