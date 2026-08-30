@@ -108,12 +108,32 @@ export const SOURCES = [
     exchange:'JSE',
     enabled:false,
     url:'https://clientportal.jse.co.za/communication/sens-announcements',
-    hint:'Page loads and the mechanism works, but the default filter is "today only" with no discovered URL parameter to widen the date range, so every run would legitimately return zero rows.'
+    hint:'Page loads and the mechanism works, but the default filter is "today only" with no discovered URL parameter to widen the date range, so every run would legitimately return zero rows. A third-party workaround (moneyweb.co.za/tools-and-data/moneyweb-sens/) was tried on 2026-08-30 and ruled out: Cloudflare escalated from a JS challenge to a flat "blocked" response after a handful of automated requests, with no interactive widget ever rendered to solve — reputation/rate-based blocking, not a fingerprint check like the Akamai sites below, so a browser-engine swap doesn\'t help and it would likely fail the same way on a cron. No free path found as of 2026-08-30 — the JSE\'s own RNS/SENS feed is a licensed product behind authentication (see README), same conclusion as the original assessment. A paid enterprise data subscription looks like the only real fix.'
   },
+
+  /* --------------------------------------------------------------
+     B3 has no free structured IPO calendar of its own, but CVM (the
+     Brazilian securities regulator) runs a public registry search
+     for equity ("ACOES") offering registrations — both pending
+     ("under review") and granted — which is exactly the IPO
+     pipeline. Queried with the year computed at run time so it
+     always checks the current year rather than a value that goes
+     stale. Verified 2026-08-30: the query mechanism is correct (a
+     parallel check against 2021/2022 returned real, known IPOs —
+     Raízen, ClearSale, Oncoclínicas, etc.), and as of that date
+     there is genuinely nothing pending and nothing granted in 2026
+     — B3's last equity registration grant was June 2022. An empty
+     result is a real ~277-char page, under fetchPage's 300-char
+     floor, so it will show up in refresh logs as a "failure" even
+     though the request succeeded and the source is working exactly
+     as intended — refresh.js already falls back to curated rows on
+     zero extracted rows regardless, so the end behavior is correct
+     either way, just the log line undersells it.
+     -------------------------------------------------------------- */
   {
     exchange:'B3',
-    enabled:false,
-    url:null,
-    hint:'No verified free public upcoming-IPO or new-listing feed found as of 2026-08-30; tested official pages returned effectively empty content.'
+    enabled:true,
+    url:`https://sistemas.cvm.gov.br/port/registro/RegistroResp99.asp?TipoEmis=ACOES&EmpEmis=&hd1=1&hd2=2&ckbtpcons1=1&ckbtpcons2=2&Ano=${new Date().getFullYear()}&NumReg=`,
+    hint:'CVM registry search results table: REGISTRO (registration number/link), TIPO DE EMISSÃO (security type — already filtered to ACOES/shares), NOME DA EMISSORA (issuer name). No date column here; treat any row present as a current-year pending or granted equity registration.'
   }
 ];

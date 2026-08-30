@@ -79,9 +79,11 @@ IPO_API_KEY=your_key npm run refresh
 
 Without the key the script still runs, logs the failure and writes the curated rows on their own. Note the free tier is non-commercial.
 
-**The agent layer.** The eleven non-US exchanges are read by an LLM rather than by CSS selectors. `scripts/lib/fetch-page.js` retrieves the page, escalating through a plain request, a reader proxy that renders JavaScript, and headless Chromium. `scripts/lib/extract.js` hands the text to OpenAI's API with the row schema and instructions never to invent a value. Every returned row is validated here, so anything malformed is dropped rather than published.
+**The agent layer.** The non-US exchanges are read by an LLM rather than by CSS selectors. `scripts/lib/fetch-page.js` retrieves the page, escalating through a plain request, a reader proxy that renders JavaScript, and a headless browser (Chromium by default; some sources need Firefox or WebKit specifically, since a handful of Akamai/Cloudflare-fronted sites fingerprint and block headless Chromium alone). `scripts/lib/extract.js` hands the text to OpenAI's API with the row schema and instructions never to invent a value. Every returned row is validated here, so anything malformed is dropped rather than published.
 
 Selectors were the wrong tool for these sources. The pages are published in four languages and redesign without notice, and a class rename breaks a selector silently while a model reading the text does not care about markup.
+
+As of 2026-08-30, 10 of 11 curated exchanges have a working live source (LSE, WSE, XETRA, DFM, TWSE, SET, TADAWUL, SGX, KLSE, and B3 via CVM's public offering-registration registry rather than B3 itself). JSE is the one exception: its official feed is a licensed product behind authentication, and a third-party workaround was tried and ruled out (Cloudflare's reputation-based blocking escalates to a flat deny after a few automated requests, with no challenge widget to solve around). A paid enterprise data subscription looks like the only real fix for JSE; it stays on the curated layer.
 
 **Check what is reachable first:**
 
@@ -91,7 +93,7 @@ USE_BROWSER=1 npm run probe      # include headless Chromium
 npm run probe LSE WSE            # a subset
 ```
 
-Several exchanges block datacenter IPs or render their calendar client-side, so expect some to fail. Set `browser:true` on those in `scripts/sources.js`, or `enabled:false` to leave an exchange on the curated layer. The URLs in that file are starting points and have not been verified from this machine.
+Several exchanges block datacenter IPs or render their calendar client-side, so expect some to fail. Set `browser:true` on those in `scripts/sources.js` (and `engine:'firefox'`/`'webkit'` if Chromium specifically gets blocked), or `enabled:false` to leave an exchange on the curated layer.
 
 **Keys.** `OPENAI_API_KEY` for extraction, `IPO_API_KEY` for the SEC source. Both go in repository secrets under the same names.
 
