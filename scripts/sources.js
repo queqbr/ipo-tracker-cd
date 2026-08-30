@@ -111,7 +111,7 @@ export const SOURCES = [
     exchange:'KLSE',
     enabled:true,
     url:urlFor('KLSE'),
-    hint:'IPO Summary table (company, offer period, issue price, shares, market — Main/ACE/LEAP, listing date), newest first, ~20 rows per page with only the first page fetched. Spans past and upcoming listings; skip rows whose listing date has already passed. No total deal size is stated directly: the "No of Shares" column breaks into three sub-columns — Public Issue, Offer For Sale, Private Placement (a "-" means that tranche is not part of this IPO, treat it as 0) — all offered at the single stated issue price. Bursa Malaysia convention is that total IPO size is issue price x the sum of all three tranches present, so put the issue price in pricePerShare and that summed share count in sharesOffered rather than leaving them empty.',
+    hint:'IPO Summary table (company, offer period, issue price, shares, market — Main/ACE/LEAP, listing date), newest first, ~20 rows per page with only the first page fetched. Spans past and upcoming listings; skip rows whose listing date has already passed. No total deal size is stated directly: the "No of Shares" column breaks into three sub-columns — Public Issue, Offer For Sale, Private Placement (a "-" means that tranche is not part of this IPO, treat it as 0) — all offered at the single stated issue price. sharesOffered MUST be Public Issue + Offer For Sale + Private Placement ADDED TOGETHER, never Public Issue alone — Public Issue by itself is only the new-capital portion, not the total IPO size. Worked example: Public Issue 205,000,000, Offer For Sale 124,000,000, Private Placement 251,519,100 -> sharesOffered = 580,519,100 (all three summed), not 205,000,000.',
     browser:true,
     engine:'firefox'
   },
