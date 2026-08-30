@@ -39,6 +39,8 @@ Each element of "listings" must have exactly these keys:
   status    string  one of: ${STATUSES.join(', ')}
   valDisp   string  TOTAL expected valuation or deal size with its currency, e.g. "PLN 4.4bn" — never a per-share or per-unit price, or "N/A"
   valUsd    number  approximate USD equivalent of the TOTAL deal size in MILLIONS, or 0 when no total figure is given or computable
+  pricePerShare  string  per-share/per-unit issue price with its currency, e.g. "RM 0.35", ONLY when the page gives this separately from a stated total (see rule 7) — else "N/A"
+  sharesOffered  number  total number of shares/units in the offering that pricePerShare corresponds to, or 0 if pricePerShare is "N/A"
   desc      string  two or three sentences on what the company does and what the offering involves, drawn only from the page
   ceo       string  chief executive's full name if the page names one, else "N/A"
   cfo       string  chief financial officer's full name if the page names one, else "N/A"
@@ -52,11 +54,36 @@ Rules, in order of importance:
 4. Map status honestly: "Approved" when the exchange or regulator has cleared it, "Filed" when a prospectus or application is lodged, "Announced" when the company has published an intention to float, "Reported" when the page is only reporting rumour.
 5. Translate names and descriptions into English, but leave tickers and currency codes as published.
 6. Dates must be YYYY-MM-DD. If the page gives only a month or quarter, use "N/A" and say so in dateNote.
-7. valDisp/valUsd are the TOTAL size of the offering, never a per-share or per-unit price. Some tables give only an issue price per share (e.g. "RM 0.35") alongside a separate share-count column rather than a stated total — if so, multiply price by the total number of shares/units offered to get the total, and use that. If the page gives a per-share price with no way to determine the total shares offered, use "N/A" / 0 rather than reporting the per-share price as if it were the deal size — a per-share price and a total deal size differ by orders of magnitude, and reporting one as the other is a data error, not a rounding one.
+7. valDisp/valUsd are the TOTAL size of the offering, never a per-share or per-unit price. If the page states a total directly, use it and leave pricePerShare/sharesOffered as "N/A"/0. If the page instead gives only a per-share price and a share-count column with no stated total, do NOT do the multiplication yourself — put the per-share price in pricePerShare (with its currency) and the total share count in sharesOffered, and leave valDisp as "N/A" and valUsd as 0; the total gets computed afterward from those two numbers, which is more reliable than arithmetic done inline. If neither a total nor both of price and share count are available, leave all four fields at their empty values — never put a per-share price in valDisp.
 8. valDisp always includes its currency code or symbol, taken from the page (a column header stating the currency counts as stating it) — never a bare number with no unit.`;
 
 function stripFences(s){
   return s.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+}
+
+/* ------------------------------------------------------------
+   Deterministic price-per-share x shares-offered -> total, done in
+   code rather than trusting the model's arithmetic. Returns null if
+   the inputs aren't usable, so the caller can fall back to N/A.
+   ------------------------------------------------------------ */
+function estimateFromPerShare(pricePerShare, sharesOffered){
+  if (!pricePerShare || pricePerShare === 'N/A') return null;
+  const shares = Number(sharesOffered);
+  if (!Number.isFinite(shares) || shares <= 0) return null;
+
+  const m = pricePerShare.match(/^([^\d]*)([\d,]+\.?\d*)/);
+  if (!m) return null;
+  const currency = m[1].trim();
+  const price = parseFloat(m[2].replace(/,/g, ''));
+  if (!currency || !Number.isFinite(price) || price <= 0) return null;
+
+  const total = price * shares;
+  const formatted = total >= 1e9 ? (total / 1e9).toFixed(2) + 'bn'
+                   : total >= 1e6 ? (total / 1e6).toFixed(1) + 'm'
+                   : total.toLocaleString('en-US');
+  // Flagged as estimated rather than presented like a stated total — this
+  // is price x shares computed here, not a figure the page itself gave.
+  return `${currency} ${formatted} (est.)`;
 }
 
 /* ------------------------------------------------------------
@@ -94,6 +121,13 @@ function coerce(row, exchange){
     // a total — a real total always has a scale word/suffix after the number.
     const trailingNum = valDisp.replace(/,/g, '').match(/(\d+\.\d+)\s*$/);
     if (trailingNum && parseFloat(trailingNum[1]) < 1) valDisp = 'N/A';
+  }
+  // No stated total, but the model (per rule 7) may have separately given a
+  // per-share price and the share count — compute the total from those
+  // rather than leaving a knowable figure as N/A.
+  if (valDisp === 'N/A'){
+    const estimated = estimateFromPerShare(s(row.pricePerShare), row.sharesOffered);
+    if (estimated) valDisp = estimated;
   }
 
   return { ok:true, row: {

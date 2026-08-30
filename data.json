@@ -1,8 +1,8 @@
 {
   "generated": "2026-08-30T18:33:21.942Z",
   "counts": {
-    "total": 39,
-    "live": 22,
+    "total": 38,
+    "live": 21,
     "curated": 17
   },
   "liveExchanges": [
@@ -235,28 +235,6 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "source": "WSE — agent extraction",
-      "hq": "N/A",
-      "bank": "N/A"
-    },
-    {
-      "sourceType": "live",
-      "company": "Al Rajhi MSCI Saudi Equity ETF",
-      "ticker": "N/A",
-      "exchange": "TADAWUL",
-      "listDate": "2026-08-03",
-      "dateNote": "Expected offering date stated",
-      "sector": "Other",
-      "status": "Announced",
-      "valUsd": 0,
-      "valDisp": "N/A",
-      "desc": "The Al Rajhi MSCI Saudi Equity ETF aims to provide investors with exposure to the performance of the MSCI Saudi Arabia Index. This ETF will be listed on the Saudi Exchange, allowing for easier access to the Saudi equity market.",
-      "ceo": "N/A",
-      "ceoEmail": "N/A",
-      "ceoConf": null,
-      "cfo": "N/A",
-      "cfoEmail": "N/A",
-      "cfoConf": null,
-      "source": "TADAWUL — agent extraction",
       "hq": "N/A",
       "bank": "N/A"
     },
