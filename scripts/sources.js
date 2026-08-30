@@ -5,8 +5,10 @@
    reads; no selectors, so a redesign does not break anything.
 
    Verified against live sites on 2026-08-30, including forcing
-   the headless-Chromium strategy to check pages that pass a
-   plain fetch with a nav shell but no real content. Run:
+   headless-browser strategies to check pages that pass a plain
+   fetch with a nav shell but no real content, and trying Firefox
+   and WebKit engines against sites that block headless Chromium
+   specifically (see the TADAWUL/SGX/KLSE note below). Run:
 
      node scripts/probe.js
      USE_BROWSER=1 node scripts/probe.js
@@ -52,18 +54,25 @@ export const SOURCES = [
 
   /* --------------------------------------------------------------
      Everything below stayed on the curated layer after verification
-     on 2026-08-30 — either hard-blocked at the edge (Akamai/
-     Cloudflare Access Denied, even under headless Chromium with a
-     real browser UA) or the real listing data only appears after a
-     UI interaction (clicking Query, switching a tab) that this
-     scraper does not perform. Re-check periodically; a site fix or
-     an interaction-capable fetch step could re-enable these.
+     on 2026-08-30. Re-check periodically.
      -------------------------------------------------------------- */
   {
     exchange:'TADAWUL',
     enabled:false,
     url:'https://www.saudiexchange.sa/wps/portal/saudiexchange/listing/ipos',
-    hint:'Akamai returns Access Denied to both plain and headless-browser requests. No working access path found as of 2026-08-30.'
+    hint:'Akamai blocks headless Chromium outright. Firefox/WebKit passed ONCE with a real Upcoming IPOs table, then reverted to the login/captcha gate on every request after (3/3) — looks like first-request leniency on a fresh session rather than a real bypass. Not safe to rely on without confirming a durable path through.'
+  },
+  {
+    exchange:'SGX',
+    enabled:false,
+    url:'https://www.sgx.com/stock-exchange/company-announcements',
+    hint:'Akamai blocks headless Chromium outright. Firefox passed ONCE with a real Company Announcements table, then reverted to the "unsupported browser" page on every request after (2/2). Same first-request-leniency pattern as TADAWUL — not reliable.'
+  },
+  {
+    exchange:'KLSE',
+    enabled:false,
+    url:'https://www.bursamalaysia.com/listing/listing_resources/ipo/ipo_summary',
+    hint:'Cloudflare blocks plain requests (403). Firefox gets a real, rich IPO Summary table when run in isolation, but times out inconsistently (Cloudflare challenge?) when run as part of a full source sweep — not reliable enough yet to enable unattended. Worth retrying with a longer goto timeout.'
   },
   {
     exchange:'JSE',
@@ -78,21 +87,9 @@ export const SOURCES = [
     hint:'No verified free public upcoming-IPO or new-listing feed found as of 2026-08-30; tested official pages returned effectively empty content.'
   },
   {
-    exchange:'SGX',
-    enabled:false,
-    url:'https://www.sgx.com/securities/company-announcements',
-    hint:'Akamai returns Access Denied to both plain and headless-browser requests.'
-  },
-  {
     exchange:'SET',
     enabled:false,
     url:'https://www.set.or.th/en/listing/ipo/upcoming-ipo/set',
     hint:'Page loads a status summary table (counts of Effective/Approved/Submitted) but no per-company rows; those load behind a tab click this scraper does not perform.'
-  },
-  {
-    exchange:'KLSE',
-    enabled:false,
-    url:'https://www.bursamalaysia.com/listing/listing_resources/ipo/ipo_summary',
-    hint:'Cloudflare challenge blocks plain requests (403) and times out headless Chromium entirely.'
   }
 ];
