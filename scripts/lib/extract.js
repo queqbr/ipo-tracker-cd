@@ -87,6 +87,63 @@ function estimateFromPerShare(pricePerShare, sharesOffered){
 }
 
 /* ------------------------------------------------------------
+   Deterministic local-currency -> USD conversion, same reasoning as
+   estimateFromPerShare(): the model was near-universally leaving
+   valUsd at 0 for anything not already in USD, rather than "invent"
+   an FX rate it wasn't given on the page — reasonable caution, but
+   it left the dashboard's USD sort/display broken for almost every
+   non-USD row. Static approximate rates (ECB/market reference,
+   2026-08-26); this is a screening tool, not a pricing engine, so a
+   periodically-stale rate is an acceptable tradeoff for the entire
+   USD column not silently reading zero. Refresh these occasionally.
+   ------------------------------------------------------------ */
+const FX_TO_USD = {
+  USD:1,    '$':1,
+  GBP:1.36, '£':1.36,
+  EUR:1.17, '€':1.17,
+  PLN:0.27,
+  MYR:0.25, RM:0.25,
+  SAR:0.27,
+  AED:0.27,
+  ZAR:0.06,
+  BRL:0.19,
+  THB:0.03,
+  CAD:0.72,
+  TWD:0.03,
+  SGD:0.79
+};
+
+function usdFromValDisp(valDisp){
+  if (!valDisp || valDisp === 'N/A') return null;
+  // Drop a "(est.)" suffix and, for the rare dual-currency malformed value
+  // ("421.2 mln CAD/1,122.7 mln PLN"), take only the first currency.
+  const cleaned = valDisp.replace(/\s*\(est\.\)\s*$/, '').split('/')[0].trim();
+
+  // Currency before the number ("PLN 4.4bn", "£40 million", "$3.3bn") or
+  // after it ("421.2 mln CAD") — try both, in that order.
+  const before = cleaned.match(/^([£$€]|[A-Za-z]{2,3})\s*([\d,]+\.?\d*)\s*(billion|million|mln|mn|bn|m)?/i);
+  const after  = !before && cleaned.match(/^([\d,]+\.?\d*)\s*(billion|million|mln|mn|bn|m)?\s*([£$€]|[A-Za-z]{2,3})/i);
+
+  let currency, amountStr, suffix;
+  if (before)     [, currency, amountStr, suffix] = before;
+  else if (after) [, amountStr, suffix, currency]  = after;
+  else return null;
+
+  const rate = FX_TO_USD[currency.toUpperCase()];
+  if (rate === undefined) return null;
+
+  let amount = parseFloat(amountStr.replace(/,/g, ''));
+  if (!Number.isFinite(amount)) return null;
+
+  suffix = (suffix || '').toLowerCase();
+  if (suffix === 'bn' || suffix === 'billion') amount *= 1000;       // -> millions
+  else if (!suffix) amount /= 1e6;                                    // raw units -> millions
+  // else already stated in millions (m/mn/mln/million)
+
+  return amount * rate;   // USD, in millions
+}
+
+/* ------------------------------------------------------------
    Row validation. Anything malformed is dropped with a reason
    rather than allowed into data.json.
    ------------------------------------------------------------ */
@@ -122,12 +179,23 @@ function coerce(row, exchange){
     const trailingNum = valDisp.replace(/,/g, '').match(/(\d+\.\d+)\s*$/);
     if (trailingNum && parseFloat(trailingNum[1]) < 1) valDisp = 'N/A';
   }
+  const pricePerShare = s(row.pricePerShare);
+  const sharesOffered = Number(row.sharesOffered) > 0 ? Number(row.sharesOffered) : 0;
+
   // No stated total, but the model (per rule 7) may have separately given a
   // per-share price and the share count — compute the total from those
   // rather than leaving a knowable figure as N/A.
   if (valDisp === 'N/A'){
-    const estimated = estimateFromPerShare(s(row.pricePerShare), row.sharesOffered);
+    const estimated = estimateFromPerShare(pricePerShare, sharesOffered);
     if (estimated) valDisp = estimated;
+  }
+
+  // The model reliably leaves valUsd at 0 for anything not already in USD
+  // (see FX_TO_USD above) — fill it in deterministically rather than
+  // showing $0 next to a real, known local-currency figure.
+  if (valUsd === 0 && valDisp !== 'N/A'){
+    const computed = usdFromValDisp(valDisp);
+    if (computed !== null) valUsd = Math.round(computed * 100) / 100;
   }
 
   return { ok:true, row: {
@@ -141,6 +209,10 @@ function coerce(row, exchange){
     status:   STATUSES.includes(row.status) ? row.status : 'Announced',
     valUsd,
     valDisp,
+    // Published, not just consumed internally, so a viewer can see the raw
+    // inputs behind an "(est.)" valDisp rather than taking it on faith.
+    pricePerShare,
+    sharesOffered,
     desc:     s(row.desc),
     ceo:      s(row.ceo), ceoEmail:'N/A', ceoConf:null,
     cfo:      s(row.cfo), cfoEmail:'N/A', cfoConf:null,

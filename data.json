@@ -33,7 +33,7 @@
       "dateNote": "Date not yet set",
       "sector": "Consumer",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 1741.5,
       "valDisp": "PLN 6,450,000,000",
       "desc": "ZABKA GROUP SOCIETE ANONYME is expected to debut on the Warsaw Stock Exchange with a significant offering value of PLN 6,450,000,000. Further details are awaited.",
       "ceo": "N/A",
@@ -43,7 +43,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -54,7 +56,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 12.47,
       "valDisp": "TWD 415.61m",
       "desc": "V5 TECHNOLOGIES is preparing for its IPO with a notable capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -64,7 +66,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "780.0"
+      "bank": "780.0",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -75,7 +79,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 17.71,
       "valDisp": "TWD 590.49m",
       "desc": "TCM is gearing up for its IPO with a significant capital amount. The company has secured the required approvals for its listing.",
       "ceo": "N/A",
@@ -85,7 +89,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "102.0"
+      "bank": "102.0",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -96,7 +102,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 33,
       "valDisp": "TWD 1.1bn",
       "desc": "MDT is preparing for its IPO with a notable capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -106,7 +112,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "38.5"
+      "bank": "38.5",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -117,7 +125,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 18,
       "valDisp": "TWD 600m",
       "desc": "ENJOY is gearing up for its IPO with a significant capital amount. The company has secured the required approvals for its listing.",
       "ceo": "N/A",
@@ -127,7 +135,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "30.0"
+      "bank": "30.0",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -138,7 +148,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 57,
       "valDisp": "TWD 1.9bn",
       "desc": "StemCyte is preparing for its IPO with a notable capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -148,7 +158,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "19.15"
+      "bank": "19.15",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -159,7 +171,7 @@
       "dateNote": "Date not yet set",
       "sector": "Other",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 134.4,
       "valDisp": "PLN 497,777,770",
       "desc": "REX CONCEPTS is planning to debut on the Warsaw Stock Exchange with an offering value of PLN 497,777,770. The exact details of the offering are yet to be confirmed.",
       "ceo": "N/A",
@@ -169,7 +181,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -180,7 +194,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 18,
       "valDisp": "TWD 600m",
       "desc": "PVI is gearing up for its IPO with a significant capital amount. The company has secured the required approvals for its listing.",
       "ceo": "N/A",
@@ -190,7 +204,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "258.0"
+      "bank": "258.0",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -201,7 +217,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 21.73,
       "valDisp": "TWD 724.48m",
       "desc": "Genomics is on track for its IPO with a considerable capital amount. The company has completed the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -211,7 +227,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Taichung Bank Securities Co., Ltd."
+      "bank": "Taichung Bank Securities Co., Ltd.",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -222,7 +240,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 45,
       "valDisp": "TWD 1.5bn",
       "desc": "KEMFLO is preparing for its IPO with a notable capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -232,7 +250,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -243,7 +263,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 26.66,
       "valDisp": "TWD 888.59m",
       "desc": "aetherAI is gearing up for its IPO with a significant capital amount. The company has secured the required approvals for its listing.",
       "ceo": "N/A",
@@ -253,7 +273,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Mega Securities Co., Ltd."
+      "bank": "Mega Securities Co., Ltd.",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -264,7 +286,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Semiconductors",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 88,
       "valDisp": "RM 352.0m (est.)",
       "desc": "Skyechip specializes in semiconductor manufacturing. The IPO involves a public issue.",
       "ceo": "N/A",
@@ -274,7 +296,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH - 698"
+      "bank": "MIH - 698",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -285,7 +309,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Energy",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 39.9,
       "valDisp": "RM 159.6m (est.)",
       "desc": "EI Power operates in the energy sector. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -295,7 +319,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-820"
+      "bank": "TIIH-820",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -306,7 +332,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 19.98,
       "valDisp": "TWD 666m",
       "desc": "HENGS is set to go public with a substantial capital amount. The company has completed the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -316,7 +342,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "President Securities Corporation"
+      "bank": "President Securities Corporation",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -327,7 +355,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 39,
       "valDisp": "TWD 1.3bn",
       "desc": "Hanchor-KY is preparing for its IPO with a significant capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -337,7 +365,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Cathay Securities Corporation"
+      "bank": "Cathay Securities Corporation",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -348,7 +378,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 12.78,
       "valDisp": "RM 51.1m (est.)",
       "desc": "Bus Cap is involved in industrial manufacturing. The IPO involves a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -358,7 +388,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-705"
+      "bank": "MIH-705",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -369,7 +401,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Technology",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 9.15,
       "valDisp": "RM 36.6m (est.)",
       "desc": "MM Computer Systems operates in the IT sector. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -379,7 +411,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH - 699"
+      "bank": "MIH - 699",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -390,7 +424,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 1410,
       "valDisp": "RM 5.64bn (est.)",
       "desc": "Pentech Holdings specializes in industrial technology. The IPO involves a public issue and private placement.",
       "ceo": "N/A",
@@ -400,7 +434,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "ACM-107"
+      "bank": "ACM-107",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -411,7 +447,7 @@
       "dateNote": "Date not yet set",
       "sector": "Metals & Mining",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 303.26,
       "valDisp": "421.2 mln CAD/1,122.7 mln PLN",
       "desc": "LUMINA METALS CORP. is set to debut on the Warsaw Stock Exchange with an offering value of approximately PLN 1,122.7 million. Further details regarding the offering are pending.",
       "ceo": "N/A",
@@ -421,7 +457,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -432,7 +470,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Consumer",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 15.63,
       "valDisp": "RM 62.5m (est.)",
       "desc": "Elsa is involved in consumer electronics. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -442,7 +480,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-832"
+      "bank": "TIIH-832",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -453,7 +493,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Technology",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 14.5,
       "valDisp": "RM 58.0m (est.)",
       "desc": "Sum Technology operates in the technology sector. The IPO involves a public issue and private placement.",
       "ceo": "N/A",
@@ -463,7 +503,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-829"
+      "bank": "TIIH-829",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -474,7 +516,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 9.9,
       "valDisp": "RM 39.6m (est.)",
       "desc": "HSS Holdings is involved in industrial services. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -484,7 +526,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-828"
+      "bank": "TIIH-828",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -495,7 +539,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Consumer",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 7.18,
       "valDisp": "RM 28.7m (est.)",
       "desc": "RT Pastry Holdings operates in the bakery sector. The IPO involves a public issue and private placement.",
       "ceo": "N/A",
@@ -505,7 +549,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-701"
+      "bank": "MIH-701",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -516,7 +562,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 12.1,
       "valDisp": "RM 48.4m (est.)",
       "desc": "Liftech Group specializes in industrial lifting solutions. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -526,7 +572,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-706"
+      "bank": "MIH-706",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -537,7 +585,7 @@
       "dateNote": "Date not yet set",
       "sector": "Real Estate",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 318.06,
       "valDisp": "PLN 1,177,988,004",
       "desc": "ROBYG is preparing for its debut on the Warsaw Stock Exchange with an offering value of PLN 1,177,988,004. Details of the offering are still to be finalized.",
       "ceo": "N/A",
@@ -547,7 +595,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -558,7 +608,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 9.38,
       "valDisp": "RM 37.5m (est.)",
       "desc": "Eckem Holdings is involved in industrial manufacturing. The IPO involves a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -568,7 +618,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-824"
+      "bank": "TIIH-824",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -579,7 +631,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Technology",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 11.65,
       "valDisp": "RM 46.6m (est.)",
       "desc": "RNG Tech operates in the technology sector. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -589,7 +641,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-825"
+      "bank": "TIIH-825",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -600,7 +654,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "AI Infrastructure",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 9.82,
       "valDisp": "RM 39.3m (est.)",
       "desc": "SRKK AI specializes in AI infrastructure solutions. The IPO involves a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -610,7 +664,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-826"
+      "bank": "TIIH-826",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -621,7 +677,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Consumer",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 7.3,
       "valDisp": "RM 29.2m (est.)",
       "desc": "Enest Group is involved in consumer products. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -631,7 +687,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-831"
+      "bank": "TIIH-831",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -642,7 +700,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Technology",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 131.5,
       "valDisp": "RM 526.0m (est.)",
       "desc": "Stratus Global Holdings operates in the technology sector. The IPO involves a public issue and private placement.",
       "ceo": "N/A",
@@ -652,7 +710,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-833"
+      "bank": "TIIH-833",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -663,7 +723,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 28.3,
       "valDisp": "TWD 943.33m",
       "desc": "Techzone is on track for its IPO with a considerable capital amount. The company has completed the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -673,7 +733,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -684,7 +746,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 13.18,
       "valDisp": "TWD 439.44m",
       "desc": "H2U is gearing up for its IPO with a significant capital amount. The company has secured the required approvals for its listing.",
       "ceo": "N/A",
@@ -694,7 +756,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -705,7 +769,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 15.95,
       "valDisp": "TWD 531.64m",
       "desc": "CLIMAX is preparing for its IPO with a notable capital amount. The company has received the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -715,7 +779,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -726,7 +792,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 36,
       "valDisp": "TWD 1.2bn",
       "desc": "RAC is set to go public with a substantial capital amount. The company has completed the necessary approvals for its listing.",
       "ceo": "N/A",
@@ -736,7 +802,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "CAPITAL SECURITIES CORP."
+      "bank": "CAPITAL SECURITIES CORP.",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -747,7 +815,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Approved",
-      "valUsd": 0,
+      "valUsd": 57,
       "valDisp": "TWD 1.9bn",
       "desc": "HLC is preparing for its IPO with a significant capital amount. The company has received approval from the TWSE Board for its listing.",
       "ceo": "N/A",
@@ -757,7 +825,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -768,7 +838,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Real Estate",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 50.8,
       "valDisp": "RM 203.2m (est.)",
       "desc": "GTA Holdings is a real estate company. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -778,7 +848,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-838"
+      "bank": "TIIH-838",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -799,7 +871,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -810,7 +884,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Energy",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 21.08,
       "valDisp": "RM 84.3m (est.)",
       "desc": "United Asiapac Energy is involved in energy solutions. The IPO consists of a public issue and private placement.",
       "ceo": "N/A",
@@ -820,7 +894,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-830"
+      "bank": "TIIH-830",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -831,7 +907,7 @@
       "dateNote": "Mid September 2026",
       "sector": "Energy",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 54.4,
       "valDisp": "£40 million",
       "desc": "1947 Oil and Gas plc is focused on the exploration and production of oil and gas. The company is planning to raise £40 million through its upcoming IPO.",
       "ceo": "N/A",
@@ -841,7 +917,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -852,7 +930,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Consumer",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 46.55,
       "valDisp": "RM 186.2m (est.)",
       "desc": "Butterfield FB operates in the food and beverage sector. The IPO includes a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -862,7 +940,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-834"
+      "bank": "TIIH-834",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -873,7 +953,7 @@
       "dateNote": "Exchange confirmed",
       "sector": "Industrials",
       "status": "Announced",
-      "valUsd": 0,
+      "valUsd": 11.28,
       "valDisp": "RM 45.1m (est.)",
       "desc": "Pioneer Heat Holdings is involved in industrial heating solutions. The IPO involves a public issue, offer for sale, and private placement.",
       "ceo": "N/A",
@@ -883,7 +963,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "ACM-110"
+      "bank": "ACM-110",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -904,7 +986,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Singapore",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -925,7 +1009,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Munich, Germany",
-      "bank": "J.P. Morgan, Deutsche Bank"
+      "bank": "J.P. Morgan, Deutsche Bank",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -946,7 +1032,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Dubai, UAE",
-      "bank": "Emirates NBD Capital, Goldman Sachs"
+      "bank": "Emirates NBD Capital, Goldman Sachs",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -967,7 +1055,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Bad Vilbel, Germany",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -988,7 +1078,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Cape Town, South Africa",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1009,7 +1101,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Riyadh, Saudi Arabia",
-      "bank": "HSBC Saudi Arabia, J.P. Morgan"
+      "bank": "HSBC Saudi Arabia, J.P. Morgan",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1030,7 +1124,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Singapore",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1051,7 +1147,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Sharjah, UAE",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1072,7 +1170,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Riyadh, Saudi Arabia",
-      "bank": "SNB Capital"
+      "bank": "SNB Capital",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1093,7 +1193,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Hamburg, Germany",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1114,7 +1216,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Singapore",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1135,7 +1239,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Dubai, UAE",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1156,7 +1262,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Dammam, Saudi Arabia",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1177,7 +1285,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Munich, Germany",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1198,7 +1308,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "São Paulo, Brazil",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1219,7 +1331,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Johannesburg, South Africa",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1240,7 +1354,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Curitiba, Brazil",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1261,7 +1377,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Riyadh, Saudi Arabia",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "curated",
@@ -1282,7 +1400,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "Johannesburg, South Africa",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1293,7 +1413,7 @@
       "dateNote": "Date not yet set",
       "sector": "Other",
       "status": "Filed",
-      "valUsd": 0,
+      "valUsd": 18,
       "valDisp": "TWD 600.04m",
       "desc": "Sunplusit is in the process of preparing for its IPO with a notable capital amount. The listing date has not yet been set.",
       "ceo": "N/A",
@@ -1303,7 +1423,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "N/A",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1324,7 +1446,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Finansa Securities Limited"
+      "bank": "Finansa Securities Limited",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1345,7 +1469,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "FIN PLUS ADVISORY CO., LTD."
+      "bank": "FIN PLUS ADVISORY CO., LTD.",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1366,7 +1492,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Maybank Securities (Thailand) Public Company Limited"
+      "bank": "Maybank Securities (Thailand) Public Company Limited",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1387,7 +1515,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "Kasikorn Securities Public Company Limited"
+      "bank": "Kasikorn Securities Public Company Limited",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     },
     {
       "sourceType": "live",
@@ -1408,7 +1538,9 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "DAOL SECURITIES (THAILAND) COMPANY LIMITED"
+      "bank": "DAOL SECURITIES (THAILAND) COMPANY LIMITED",
+      "pricePerShare": "N/A",
+      "sharesOffered": 0
     }
   ]
 }
