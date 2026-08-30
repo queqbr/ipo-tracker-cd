@@ -8,7 +8,7 @@
    headless-browser strategies to check pages that pass a plain
    fetch with a nav shell but no real content, and trying Firefox
    and WebKit engines against sites that block headless Chromium
-   specifically (see the TADAWUL/SGX note below). Run:
+   specifically (see the TADAWUL/SGX/KLSE note below). Run:
 
      node scripts/probe.js
      USE_BROWSER=1 node scripts/probe.js
@@ -60,15 +60,20 @@ export const SOURCES = [
   },
 
   /* --------------------------------------------------------------
-     TADAWUL and SGX front Akamai, which blocks headless Chromium
-     outright and blocked Firefox/WebKit too after the first request
-     in same-session repeated testing here (looked like first-request
-     leniency, not a real bypass). Left enabled per explicit call: a
-     scheduled cron makes exactly one request per source per day from
-     a fresh runner IP — not the repeated-request pattern that
-     triggered the block in testing — and a blocked run just falls
-     back to curated rows for that exchange, so the downside is
-     bounded. Worth revisiting if the cron shows persistent failures.
+     TADAWUL, SGX and KLSE front Akamai/Cloudflare, which blocked
+     headless Chromium outright. TADAWUL/SGX also blocked Firefox
+     and WebKit after the first request in same-session repeated
+     testing here (looked like first-request leniency, not a real
+     bypass); KLSE passed cleanly with Firefox in isolation (2/2, a
+     rich real IPO Summary table) but timed out once during a full
+     source sweep — a milder, less consistent failure than the other
+     two's outright block page. All three left enabled per explicit
+     call: a scheduled cron makes exactly one request per source per
+     day from a fresh runner IP — not the repeated-request pattern
+     that triggered the failures in testing — and a blocked or timed-
+     out run just falls back to curated rows for that exchange, so
+     the downside is bounded. Worth revisiting if the cron shows
+     persistent failures.
      -------------------------------------------------------------- */
   {
     exchange:'TADAWUL',
@@ -86,17 +91,19 @@ export const SOURCES = [
     browser:true,
     engine:'firefox'
   },
+  {
+    exchange:'KLSE',
+    enabled:true,
+    url:'https://www.bursamalaysia.com/listing/listing_resources/ipo/ipo_summary',
+    hint:'IPO Summary table (company, offer period, issue price, shares, market — Main/ACE/LEAP, listing date), newest first, ~20 rows per page with only the first page fetched. Spans past and upcoming listings; skip rows whose listing date has already passed.',
+    browser:true,
+    engine:'firefox'
+  },
 
   /* --------------------------------------------------------------
      Everything below stayed on the curated layer after verification
      on 2026-08-30. Re-check periodically.
      -------------------------------------------------------------- */
-  {
-    exchange:'KLSE',
-    enabled:false,
-    url:'https://www.bursamalaysia.com/listing/listing_resources/ipo/ipo_summary',
-    hint:'Cloudflare blocks plain requests (403). Firefox gets a real, rich IPO Summary table when run in isolation, but times out inconsistently (Cloudflare challenge?) when run as part of a full source sweep — not reliable enough yet to enable unattended. Worth retrying with a longer goto timeout.'
-  },
   {
     exchange:'JSE',
     enabled:false,
