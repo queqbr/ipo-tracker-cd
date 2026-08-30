@@ -2,7 +2,33 @@
 
 A screening tool for upcoming IPOs across eleven exchanges: London, Warsaw, Dubai, Riyadh, Johannesburg, São Paulo, Singapore, Taipei, Bangkok, Kuala Lumpur and Frankfurt.
 
-## Stack
+**Live dashboard:** [ipo-tracker-cd.vercel.app](https://ipo-tracker-cd.vercel.app)
+
+## Tech stack
+
+- **Frontend:** vanilla HTML/CSS/JavaScript — no framework, no build step, no server. `index.html` is the entire application; `app.js` handles filtering, sorting, rendering and polling; `styles.css` holds the design tokens.
+- **Data pipeline:** a Node.js script (`scripts/refresh.js`) that reads each exchange's own site and has an LLM (OpenAI's API) extract structured listing rows against a fixed schema, rather than CSS selectors — see "The agent layer" under Technical details below for why.
+- **Scheduling:** a GitHub Actions workflow runs the pipeline on a weekday cron, commits `data.json` when it changes, and that push triggers a redeploy.
+- **Hosting:** Vercel, auto-deploying from the `main` branch.
+
+## How to use the dashboard
+
+- **Search** the box at top-left matches on company name or ticker as you type.
+- **Filter** by exchange or filing status via the dropdowns, or by sector via the chip row underneath. The calendar strip across the header doubles as a date filter — click a month to narrow to it, click again to release.
+- **Sort** any column by clicking its header. Each column cycles three states: ascending, descending, then back to unsorted — the arrow shows which is active.
+- **Expand a row** (the `+` button) for the full business description, transaction detail, and CEO/CFO contact block with copy-to-clipboard buttons on each email.
+- **Star a company** to save it to a watchlist (browser local storage); the toolbar button filters to saved names only.
+- **Export CSV** writes whatever is currently on screen — filters included — to a spreadsheet.
+- The exchange dropdown marks which exchanges are currently **live** (scraped fresh on the weekday cron) versus **needs subscription** (no free public feed exists, e.g. JSE) — everything else is hand-curated and updated as new information comes in.
+- Missing fields render as a muted **N/A** throughout rather than blank space or an error.
+
+---
+
+## Technical details
+
+The sections below go deeper than the summary above — architecture, the scraper pipeline, deployment options and local setup — for anyone extending the codebase.
+
+### File layout
 
 Vanilla JavaScript, no framework, no build step, no server. Archivo and JetBrains Mono load from Google Fonts, and the page degrades to system fonts without them.
 
@@ -22,7 +48,7 @@ scripts/probe.js               dry-run reachability check per source
 .github/workflows/refresh.yml  weekday cron
 ```
 
-## Deploy
+### Deploy
 
 **Vercel** — `vercel --prod` from this directory, or drag the folder into the dashboard.
 
@@ -34,27 +60,27 @@ Nothing to configure. `index.html` is the entire application.
 
 Local preview: `python3 -m http.server 8000`, then open `http://localhost:8000`.
 
-## Using it
+### Feature notes
 
 **Search** matches on company name and ticker.
 
 **Filters** cover exchange, sector and filing status. The listing calendar across the top of the header doubles as a date filter: each column is a month, each pip is one listing coloured by region, and clicking a column narrows the table to that month. Clicking it again releases the filter.
 
-**Sorting** works on every column. Company, exchange, date, sector, valuation, CEO and CFO all sort ascending and descending. Valuation sorts on a USD-normalised key rather than on the displayed local-currency string, so PLN, SAR and BRL figures rank correctly against each other. Rows with no disclosed executive sort to the bottom in either direction rather than clustering at the top of an A-Z.
+**Sorting** works on every column and cycles three states per click: ascending, descending, then back to unsorted. Valuation sorts on a USD-normalised key rather than on the displayed local-currency string, so PLN, SAR and BRL figures rank correctly against each other. Rows with no disclosed executive, or no known listing date, sort to the bottom in either direction rather than clustering at the top of an A-Z or scattering through numeric dates.
 
 **Expanding a row** opens the full business description, transaction detail, and the contact block with copy buttons on each address.
 
 **The watchlist** saves to browser storage. The star toggles a company in or out, and the toolbar button filters to saved names.
 
-**Export CSV** writes whatever is currently on screen, filters included, with all twenty fields and a UTF-8 BOM so Excel opens accented characters correctly.
+**Export CSV** writes whatever is currently on screen, filters included, with all twenty-one fields and a UTF-8 BOM so Excel opens accented characters correctly.
 
 **Refresh** happens on its own. The page polls `data.json` every five minutes and again whenever a backgrounded tab returns to the foreground, re-rendering only when the payload has actually changed so filters and open rows survive the update. The toolbar shows the last sync time, and the button forces a check. A failed poll keeps the last good payload rather than emptying the table.
 
-## Data
+### Data
 
 Two layers, tracked per exchange rather than per row. Both cover the same eleven exchanges — the split is about how fresh an exchange's data is, not which market it's on.
 
-**Live** — read directly off the exchange's own site by an LLM (the agent layer, below) on the weekday cron, no CSS selectors involved. The exchange picker and a small badge next to the exchange name mark which exchanges are currently live.
+**Live** — read directly off the exchange's own site by an LLM (the agent layer, below) on the weekday cron, no CSS selectors involved. The exchange filter dropdown marks which exchanges are currently live — this is a per-exchange capability flag, not a per-row one, so an exchange stays marked live even on a run where it happens to return nothing new.
 
 **Historical (curated internally)** — the hand-maintained baseline in `data.js`. Whenever an exchange's live source fails for a given run, that exchange's rows stay on whatever was last curated or last successfully scraped, rather than the row disappearing from the table. This is the unmarked default state — only live exchanges get a badge, so historical data doesn't read as a called-out warning.
 
@@ -103,6 +129,6 @@ Without `OPENAI_API_KEY` or a given exchange's URL, that agent source can't run;
 
 **Missing data.** Unavailable fields render as N/A in a muted style. The row still sorts, filters and exports normally.
 
-## Adding a listing
+### Adding a listing
 
-Append an object to the `DATA` array in `data.js` with `sourceType:'curated'`. Every field is required; use the string `'N/A'` for anything unavailable and the dashboard will render it muted and keep the row sortable. `valUsd` is a numeric USD sort key in millions, `valDisp` is the local-currency string that renders. If the company is new, add its domain to `DOMAINS` so the IR fallback route resolves.
+Append an object to the `DATA` array in `data.js` with `sourceType:'curated'`. Every field is required; use the string `'N/A'` for anything unavailable and the dashboard will render it muted and keep the row sortable. `valUsd` is a numeric USD sort key in millions, `valDisp` is the local-currency string that renders. `pricePerShare`/`sharesOffered` exist for the agent layer's benefit (they back a computed valuation estimate when a source gives per-share price and share count instead of a stated total) — a hand-curated row should just set them to `'N/A'`/`0`. If the company is new, add its domain to `DOMAINS` so the IR fallback route resolves.
