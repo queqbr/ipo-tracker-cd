@@ -98,8 +98,15 @@ async function main(){
       report.push(`${s.name}: FAILED (${error}) — curated rows retained`);
       continue;
     }
-    // Replace only this source's exchanges; everything else is untouched.
-    rows = rows.filter(r => !s.exchanges.includes(r.exchange)).concat(fresh);
+    // A live row supersedes an existing row (curated or a prior live one)
+    // with the same company name; anything else for this exchange is kept
+    // as-is. Previously this replaced the entire exchange wholesale the
+    // moment its live scrape succeeded, silently deleting hand-curated
+    // pipeline companies the day's live snapshot just didn't happen to
+    // mention — e.g. Ebury Partners disappearing from LSE the moment the
+    // live scrape returned two different companies instead.
+    const freshNames = new Set(fresh.map(r => r.company.toLowerCase()));
+    rows = rows.filter(r => !(s.exchanges.includes(r.exchange) && freshNames.has(r.company.toLowerCase()))).concat(fresh);
     report.push(`${s.name}: ${fresh.length} live rows`);
   }
 
