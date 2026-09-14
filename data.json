@@ -1,8 +1,8 @@
 {
-  "generated": "2026-09-11T11:02:54.398Z",
+  "generated": "2026-09-14T12:29:06.199Z",
   "counts": {
-    "total": 82,
-    "live": 49,
+    "total": 80,
+    "live": 47,
     "curated": 33
   },
   "liveExchanges": [
@@ -37,7 +37,7 @@
       "valDisp": "TWD 415.61m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "V5 TECHNOLOGIES is gearing up for its IPO with a significant capital amount. The expected listing date is in March 2026.",
+      "desc": "V5 TECHNOLOGIES is planning to go public with a substantial capital amount. The listing is confirmed for March 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -45,7 +45,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "780.0"
     },
     {
       "sourceType": "live",
@@ -60,7 +60,7 @@
       "valDisp": "TWD 590.49m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "TCM is preparing for its IPO with a considerable capital amount. The listing is expected in April 2026.",
+      "desc": "TCM is preparing for its IPO with a notable capital amount. The company is confirmed to list in April 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -68,7 +68,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "102.0"
     },
     {
       "sourceType": "live",
@@ -83,7 +83,7 @@
       "valDisp": "TWD 1.1bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "MDT is gearing up for its IPO with a significant capital amount. The expected listing date is in April 2026.",
+      "desc": "MDT is set to launch its IPO with a significant capital amount. The listing date is confirmed for April 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -91,7 +91,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "38.5"
     },
     {
       "sourceType": "live",
@@ -106,7 +106,7 @@
       "valDisp": "TWD 600m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "ENJOY is preparing for its IPO with a notable capital amount. The listing is anticipated in April 2026.",
+      "desc": "ENJOY is preparing for its IPO with a notable capital amount. The company is confirmed to list in April 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -114,7 +114,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "30.0"
     },
     {
       "sourceType": "live",
@@ -129,7 +129,7 @@
       "valDisp": "TWD 1.9bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "StemCyte is gearing up for its IPO with a significant capital amount. The expected listing date is in April 2026.",
+      "desc": "StemCyte is planning to go public with a substantial capital amount. The listing is confirmed for April 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -137,7 +137,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "19.15"
     },
     {
       "sourceType": "live",
@@ -145,14 +145,14 @@
       "ticker": "N/A",
       "exchange": "WSE",
       "listDate": "2026-05-07",
-      "dateNote": "Date not yet set",
+      "dateNote": "Date confirmed",
       "sector": "Other",
-      "status": "Announced",
+      "status": "Approved",
       "valUsd": 134.4,
       "valDisp": "PLN 497,777,770",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "REX CONCEPTS is preparing for its IPO, aiming to raise significant capital to expand its operations. The offering is expected to attract considerable investor interest.",
+      "desc": "REX CONCEPTS is preparing for its IPO with an expected offering value of PLN 497.8 million. The company is set to debut on May 7, 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -175,7 +175,7 @@
       "valDisp": "TWD 600m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "PVI is preparing for its IPO with a considerable capital amount. The listing is expected in May 2026.",
+      "desc": "PVI is preparing for its IPO with a significant capital amount. The company is confirmed to list in May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -183,7 +183,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "N/A"
+      "bank": "258.0"
     },
     {
       "sourceType": "live",
@@ -198,7 +198,7 @@
       "valDisp": "TWD 724.48m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "Genomics is gearing up for its IPO with a significant capital amount. The expected listing date is in May 2026.",
+      "desc": "Genomics is set to launch its IPO with a notable capital amount. The listing date is confirmed for May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -221,7 +221,7 @@
       "valDisp": "TWD 1.5bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "KEMFLO is preparing for its IPO with a notable capital amount. The listing is anticipated in May 2026.",
+      "desc": "KEMFLO is preparing for its IPO with a significant capital amount. The company is confirmed to list in May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -244,7 +244,7 @@
       "valDisp": "TWD 888.59m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "aetherAI is gearing up for its IPO with a significant capital amount. The expected listing date is in May 2026.",
+      "desc": "aetherAI is planning to go public with a substantial capital amount. The listing is confirmed for May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -267,7 +267,7 @@
       "valDisp": "TWD 666m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "HENGS is preparing for its IPO with a considerable capital amount. The listing is expected in May 2026.",
+      "desc": "HENGS is preparing for its IPO with a notable capital amount. The company is confirmed to list in May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -290,7 +290,7 @@
       "valDisp": "TWD 1.3bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "Hanchor-KY is set to go public with a significant capital amount. The expected listing date is in May 2026.",
+      "desc": "Hanchor-KY is set to launch its IPO with a significant capital amount. The listing date is confirmed for May 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -321,7 +321,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH - 699"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -332,9 +332,9 @@
       "dateNote": "Exchange confirmed",
       "sector": "Other",
       "status": "Announced",
-      "valUsd": 14.1,
-      "valDisp": "RM 56.4m (est.)",
-      "pricePerShare": "RM 0.20",
+      "valUsd": 1410,
+      "valDisp": "RM 5.64bn (est.)",
+      "pricePerShare": "RM 0,20",
       "sharesOffered": 281990000,
       "desc": "Pentech Holdings is planning an IPO on the ACE Market. The offering includes a public issue and private placement.",
       "ceo": "N/A",
@@ -344,7 +344,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "ACM-107"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -352,14 +352,14 @@
       "ticker": "N/A",
       "exchange": "WSE",
       "listDate": "2026-06-16",
-      "dateNote": "Date not yet set",
+      "dateNote": "Date confirmed",
       "sector": "Metals & Mining",
-      "status": "Announced",
+      "status": "Approved",
       "valUsd": 303.26,
-      "valDisp": "421.2 mln CAD",
+      "valDisp": "CAD 421.2 mln",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "LUMINA METALS CORP. focuses on the exploration and development of metal resources. The upcoming IPO is part of its strategy to fund new projects.",
+      "desc": "LUMINA METALS CORP. is planning to go public with an offering valued at approximately CAD 421.2 million. The expected listing date is June 16, 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -390,7 +390,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-832"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -413,7 +413,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-829"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -436,7 +436,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-828"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -459,7 +459,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-701"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -482,29 +482,6 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-706"
-    },
-    {
-      "sourceType": "live",
-      "company": "ADATEX",
-      "ticker": "N/A",
-      "exchange": "WSE",
-      "listDate": "2026-07-01",
-      "dateNote": "Date not yet set",
-      "sector": "Other",
-      "status": "Announced",
-      "valUsd": 0,
-      "valDisp": "N/A",
-      "pricePerShare": "N/A",
-      "sharesOffered": 0,
-      "desc": "ADATEX is set to debut on the stock market, aiming to leverage its innovative solutions in the textile industry. The IPO will help fund its growth initiatives.",
-      "ceo": "N/A",
-      "ceoEmail": "N/A",
-      "ceoConf": null,
-      "cfo": "N/A",
-      "cfoEmail": "N/A",
-      "cfoConf": null,
-      "hq": "N/A",
       "bank": "N/A"
     },
     {
@@ -513,14 +490,14 @@
       "ticker": "N/A",
       "exchange": "WSE",
       "listDate": "2026-07-02",
-      "dateNote": "Date not yet set",
+      "dateNote": "Date confirmed",
       "sector": "Real Estate",
-      "status": "Announced",
+      "status": "Approved",
       "valUsd": 318.06,
       "valDisp": "PLN 1,177,988,004",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "ROBYG is a leading real estate developer in Poland, planning to use the proceeds from its IPO to finance new projects and expand its market presence.",
+      "desc": "ROBYG is set to debut on July 2, 2026, with an offering value of PLN 1.18 billion. The company focuses on real estate development.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -551,7 +528,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-824"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -574,7 +551,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-825"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -597,7 +574,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-826"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -620,7 +597,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-831"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -643,7 +620,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-833"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -658,7 +635,7 @@
       "valDisp": "TWD 943.33m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "Techzone is preparing for its IPO with a considerable capital amount. The listing is expected in July 2026.",
+      "desc": "Techzone is planning to go public with a substantial capital amount. The listing is confirmed for July 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -681,7 +658,7 @@
       "valDisp": "TWD 439.44m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "H2U is gearing up for its IPO with a significant capital amount. The expected listing date is in July 2026.",
+      "desc": "H2U is preparing for its IPO with a significant capital amount. The company is confirmed to list in July 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -704,30 +681,7 @@
       "valDisp": "TWD 531.64m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "CLIMAX is preparing for its IPO with a notable capital amount. The listing is anticipated in July 2026.",
-      "ceo": "N/A",
-      "ceoEmail": "N/A",
-      "ceoConf": null,
-      "cfo": "N/A",
-      "cfoEmail": "N/A",
-      "cfoConf": null,
-      "hq": "N/A",
-      "bank": "N/A"
-    },
-    {
-      "sourceType": "live",
-      "company": "NWAI DOM MAKLERSKI",
-      "ticker": "N/A",
-      "exchange": "WSE",
-      "listDate": "2026-07-29",
-      "dateNote": "Date not yet set",
-      "sector": "FinTech",
-      "status": "Announced",
-      "valUsd": 0,
-      "valDisp": "N/A",
-      "pricePerShare": "N/A",
-      "sharesOffered": 0,
-      "desc": "NWAI DOM MAKLERSKI is preparing for its IPO to enhance its service offerings in the financial sector. The funds raised will support its technological advancements.",
+      "desc": "CLIMAX is set to launch its IPO with a notable capital amount. The listing date is confirmed for July 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -750,7 +704,7 @@
       "valDisp": "TWD 1.2bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "RAC is set to go public with a substantial capital amount. The expected listing date is in August 2026.",
+      "desc": "RAC is planning to go public with a substantial capital amount. The listing is confirmed for August 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -773,7 +727,7 @@
       "valDisp": "TWD 1.9bn",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "HLC is preparing for its IPO with a significant capital amount. The listing is expected to take place in August 2026.",
+      "desc": "HLC is preparing for its IPO with a significant capital amount. The company has received approval from the exchange and is set to list in August 2026.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -804,7 +758,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-838"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -827,7 +781,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-830"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -842,7 +796,7 @@
       "valDisp": "£40 million",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "1947 Oil and Gas plc is planning to raise £40 million through an equity offering. The expected first trading day is in mid September 2026.",
+      "desc": "1947 Oil and Gas is focused on the exploration and production of oil and gas resources. The company is planning to raise £40 million through its upcoming IPO.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -873,7 +827,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-834"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -896,7 +850,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "ACM-110"
+      "bank": "N/A"
     },
     {
       "sourceType": "live",
@@ -911,7 +865,7 @@
       "valDisp": "N/A",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "Aimia Inc. has announced its intention to float with an expected first trading date of 22 September 2026. Further details on the offering are not yet available.",
+      "desc": "Aimia is a data-driven marketing and loyalty analytics company. The firm has announced its intention to float on the AIM market.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -965,7 +919,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-708"
+      "bank": "N/A"
     },
     {
       "sourceType": "curated",
@@ -1011,7 +965,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "MIH-710"
+      "bank": "N/A"
     },
     {
       "sourceType": "curated",
@@ -1057,7 +1011,7 @@
       "cfoEmail": "N/A",
       "cfoConf": null,
       "hq": "N/A",
-      "bank": "TIIH-835"
+      "bank": "N/A"
     },
     {
       "sourceType": "curated",
@@ -1762,7 +1716,7 @@
       "valDisp": "TWD 600.04m",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "Sunplusit is in the process of preparing for its IPO with a notable capital amount. The listing date is yet to be determined.",
+      "desc": "Sunplusit has filed for an IPO with a notable capital amount. The listing date is yet to be determined.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -1854,7 +1808,7 @@
       "valDisp": "N/A",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "The company operates as a holding company investing in businesses related to a WealthTech platform and other related sectors.",
+      "desc": "Finnomena operates as a holding company investing in companies related to a WealthTech platform and other related businesses.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -1871,13 +1825,13 @@
       "exchange": "SET",
       "listDate": "N/A",
       "dateNote": "Date not yet set",
-      "sector": "Industrials",
+      "sector": "Other",
       "status": "Announced",
       "valUsd": 0,
       "valDisp": "N/A",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "The company manufactures, distributes, and installs lightweight concrete walls mixed with ceramic pellets.",
+      "desc": "The company manufactures, distributes, and installs lightweight concrete walls mixed with ceramic pellets under its brand.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
@@ -1900,7 +1854,7 @@
       "valDisp": "N/A",
       "pricePerShare": "N/A",
       "sharesOffered": 0,
-      "desc": "The company specializes in beauty and health retail under the EVEANDBOY brand, with distribution through retail stores and online channels.",
+      "desc": "EVEANDBOY is a beauty and health retail specialist with offline and online distribution channels, including retail stores and e-commerce platforms.",
       "ceo": "N/A",
       "ceoEmail": "N/A",
       "ceoConf": null,
